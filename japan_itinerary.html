@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Rinus & Ronnie in Japan 🌸</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #e8f4fd;
+      --card: #ffffff;
+      --green: #a8d5a2;
+      --green-dark: #6ab36a;
+      --blue: #4a90d9;
+      --blue-light: #d6eaf8;
+      --blue-dark: #2471a3;
+      --red: #e74c3c;
+      --text: #2c3e50;
+      --text-muted: #7f8c8d;
+      --shadow: 0 2px 12px rgba(0,0,0,0.09);
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    /* ─── WRAPPER ─── */
+    .wrapper {
+      max-width: 430px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* ─── HEADER ─── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(135deg, #1a6fb5 0%, #2980b9 60%, #1abc9c 100%);
+      color: white;
+      padding: 14px 18px 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+    .site-header h1 {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .site-header .date-range {
+      font-size: 12px;
+      opacity: 0.85;
+      margin-top: 1px;
+    }
+    .countdown-bar {
+      margin-top: 8px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .countdown-bar .count-num {
+      background: white;
+      color: var(--blue-dark);
+      border-radius: 10px;
+      padding: 1px 8px;
+      font-weight: 800;
+    }
+
+    /* ─── BOTTOM NAV ─── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      border-top: 1px solid #dce9f5;
+      display: flex;
+      z-index: 100;
+      box-shadow: 0 -2px 12px rgba(0,0,0,0.1);
+    }
+    .bottom-nav button {
+      flex: 1;
+      padding: 10px 4px 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transition: color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .bottom-nav button .nav-icon { font-size: 20px; line-height: 1; }
+    .bottom-nav button.active { color: var(--blue); }
+
+    /* ─── SECTIONS ─── */
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+
+    /* ─── FLIGHT CARDS ─── */
+    .flight-card {
+      margin: 16px 16px 0;
+      background: linear-gradient(135deg, #1a6fb5, #2980b9);
+      border-radius: var(--radius);
+      padding: 18px;
+      color: white;
+      box-shadow: var(--shadow);
+    }
+    .flight-card.return {
+      background: linear-gradient(135deg, #6ab36a, #27ae60);
+    }
+    .flight-card .fc-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.8;
+      margin-bottom: 6px;
+    }
+    .flight-card .fc-route {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .flight-card .fc-num {
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+    .flight-card .fc-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .flight-card .fc-item { font-size: 12px; opacity: 0.9; }
+    .flight-card .fc-item span { font-weight: 700; display: block; font-size: 14px; opacity: 1; }
+    .flight-plane {
+      font-size: 28px;
+      text-align: center;
+      margin: 10px 0 4px;
+    }
+
+    /* ─── CITY BANNER ─── */
+    .city-banner {
+      margin: 20px 0 0;
+      background: var(--green);
+      padding: 14px 18px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #2d5a2d;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.2px;
+    }
+    .city-banner .city-sub {
+      font-size: 12px;
+      font-weight: 500;
+      color: #4a7a4a;
+      margin-left: auto;
+    }
+
+    /* ─── DAY CARD ─── */
+    .day-card {
+      margin: 12px 16px 0;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .day-card-header {
+      padding: 14px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .day-card-header:active { background: #f5f9fd; }
+    .day-num-badge {
+      background: var(--blue);
+      color: white;
+      border-radius: 10px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .day-header-text { flex: 1; min-width: 0; }
+    .day-name {
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .day-date { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+    .day-chevron {
+      font-size: 18px;
+      color: var(--text-muted);
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+    .day-card.open .day-chevron { transform: rotate(180deg); }
+
+    .day-card-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .day-card.open .day-card-body { max-height: 1200px; }
+
+    .day-card-inner { padding: 0 16px 16px; }
+
+    .location-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .activity-list { list-style: none; }
+    .activity-list li {
+      padding: 6px 0;
+      font-size: 14px;
+      border-bottom: 1px solid #f0f4f8;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .activity-list li:last-child { border-bottom: none; }
+    .activity-list li .act-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--blue);
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+
+    .note-box {
+      margin-top: 12px;
+      background: #f8f9fa;
+      border-left: 3px solid var(--blue);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .note-box strong { color: var(--text); display: block; margin-bottom: 2px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .hotel-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      background: var(--blue);
+      color: white;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hotel-btn:active { opacity: 0.85; }
+
+    /* ─── ACCORDION / TODO ─── */
+    .todo-section { margin: 16px 16px 0; }
+    .todo-section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .accordion-item {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .accordion-header {
+      padding: 14px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .accordion-header:active { background: #f5f9fd; }
+    .accordion-icon { font-size: 22px; }
+    .accordion-title { flex: 1; font-size: 15px; font-weight: 700; }
+    .accordion-chevron { font-size: 18px; color: var(--text-muted); transition: transform 0.3s; }
+    .accordion-item.open .accordion-chevron { transform: rotate(180deg); }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .accordion-item.open .accordion-body { max-height: 2000px; }
+    .accordion-inner { padding: 0 16px 16px; }
+
+    .todo-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f4f8;
+    }
+    .todo-item:last-child { border-bottom: none; }
+    .todo-item .todo-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .todo-item .todo-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .todo-item .todo-time {
+      display: inline-block;
+      margin-top: 4px;
+      background: var(--green);
+      color: #2d5a2d;
+      border-radius: 10px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .todo-item .maps-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* ─── OSAKA EVENING ─── */
+    .osaka-timeline {
+      margin-top: 4px;
+    }
+    .osaka-stop {
+      display: flex;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f4f8;
+    }
+    .osaka-stop:last-child { border-bottom: none; }
+    .osaka-time {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blue);
+      white-space: nowrap;
+      min-width: 50px;
+      padding-top: 1px;
+    }
+    .osaka-content .osaka-name { font-size: 13px; font-weight: 700; }
+    .osaka-content .osaka-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; margin-top: 2px; }
+
+    /* ─── INFO TAB ─── */
+    .info-card {
+      margin: 16px 16px 0;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .info-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f4f8;
+      gap: 10px;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { font-size: 12px; color: var(--text-muted); font-weight: 600; min-width: 90px; }
+    .info-value { font-size: 13px; font-weight: 600; text-align: right; flex: 1; }
+
+    .tip-box {
+      background: #fff9e6;
+      border-left: 3px solid #f39c12;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 12px;
+      font-size: 13px;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* ─── PAGE PADDING ─── */
+    .page-bottom { height: 20px; }
+
+    /* ─── DECORATIVE BLOSSOMS ─── */
+    .blossom-row {
+      text-align: center;
+      font-size: 18px;
+      padding: 10px 0 4px;
+      opacity: 0.45;
+      letter-spacing: 4px;
+    }
+
+    /* ─── SCROLL HINT ─── */
+    .section-scroll-hint {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      padding: 12px 0 4px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="site-header">
+    <h1>✈️ Rinus &amp; Ronnie in Japan 🌸</h1>
+    <div class="date-range">24 maart – 2 april 2026 &nbsp;·&nbsp; 10 dagen</div>
+    <div class="countdown-bar" id="countdown-bar">
+      <span>🗓️</span>
+      <span id="countdown-text">Laden…</span>
+    </div>
+  </header>
+
+  <!-- ═══ SCHEDULE TAB ═══ -->
+  <section class="tab-section active" id="tab-schedule">
+
+    <!-- FLIGHT OUT -->
+    <div class="flight-card" style="margin-top:16px">
+      <div class="fc-label">✈️ Heenreis</div>
+      <div class="fc-route">AMS → NRT</div>
+      <div class="fc-num">KL861 &nbsp;·&nbsp; KLM</div>
+      <div class="flight-plane">🛫</div>
+      <div class="fc-row">
+        <div class="fc-item">Vertrek<span>di 24 mrt – 14:20</span></div>
+        <div class="fc-item">Aankomst<span>wo 25 mrt – 11:45</span></div>
+        <div class="fc-item">Duur<span>~12 uur</span></div>
+      </div>
+    </div>
+
+    <!-- TOKYO SECTION -->
+    <div class="city-banner" id="tokyo-anchor">
+      🗼 TOKIO
+      <span class="city-sub">25 – 28 mrt</span>
+    </div>
+
+    <!-- Day 1: Wed 25 Mar -->
+    <div class="day-card" id="day1">
+      <div class="day-card-header" onclick="toggleCard('day1')">
+        <div class="day-num-badge">Dag 1</div>
+        <div class="day-header-text">
+          <div class="day-name">Woensdag 25 maart</div>
+          <div class="day-date">Aankomst Tokio 🗼</div>
+        </div>
+        <div class="day-chevron">⌄</div>
+      </div>
+      <div class="day-card-body">
+        <div class="day-card-inner">
+          <div class="location-chip">📍 Tokio – Narita (NRT)</div>
+          <ul class="activity-list">
+            <li><div class="act-dot"></div>Landing op Narita luchthaven om 11:45</li>
+            <li><div class="act-dot"></div>Douane, bagage ophalen, JR-kaart activeren</li>
+            <li><div class="act-dot"></div>Narita Express naar centrum Tokio (~60 min)</li>
+            <li><div class="act-dot"></div>Inchecken in hotel, uitpakken & bijkomen</li>
+            <li><div class="act-dot"></div>Eerste avondwandeling in de buurt</li>
+            <li><div class="act-dot"></div>Ramen of sushi eten bij lokaal restaurant</li>
+          </ul>
+          <div class="note-box">
+            <strong>🏨 Hotel</strong>
+            Tokio – eerste nacht, zelfde hotel als de rest van de verblijf in Tokio.
+          </div>
+          <a href="https://www.booking.com/hotel/jp/dong-ji-suteixin-su-isutosaido.nl.html" target="_blank" rel="noopener" class="hotel-btn">🏨 Hotel bekijken →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 2: Thu 26 Mar -->
+    <div class="day-card" id="day2">
+      <div class="day-card-header" onclick="toggleCard('day2')">
+        <div class="day-num-badge">Dag 2</div>
+        <div class="day-header-text">
+          <div class="day-name">Donderdag 26 maart</div>
+          <div class="day-date">Tokio verkennen 🎮</div>
+        </div>
+        <div class="day-chevron">⌄</div>
+      </div>
+      <div class="day-card-body">
+        <div class="day-card-inner">
+          <div class="location-chip">📍 Tokio</div>
+          <ul class="activity-list">
+            <li><div class="act-dot"></div>Akihabara – elektronica, anime & retro gaming</li>
+            <li><div class="act-dot"></div>Yodobashi Camera of Bic Camera verkennen</li>
+            <li><div class="act-dot"></div>Lunch in Akihabara (maid café of ramen)</li>
+            <li><div class="act-dot"></div>Shinjuku – shopping, neon & straatleven</li>
+            <li><div class="act-dot"></div>Avond: Golden Gai of Omoide Yokocho (Memory Lane)</li>
+          </ul>
+          <div class="note-box">
+            <strong>💡 Tip</strong>
+            Koop een Suica/Pasmo IC-kaart voor de metro – veel makkelijker dan losse kaartjes kopen.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 3: Fri 27 Mar -->
+    <div class="day-card" id="day3">
+      <div class="day-card-header" onclick="toggleCard('day3')">
+        <div class="day-num-badge">Dag 3</div>
+        <div class="day-header-text">
+          <div class="day-name">Vrijdag 27 maart</div>
+          <div class="day-date">Tokio – vrije dag 🛍️</div>
+        </div>
+        <div class="day-chevron">⌄</div>
+      </div>
+      <div class="day-card-body">
+        <div class="day-card-inner">
+          <div class="location-chip">📍 Tokio</div>
+          <ul class="activity-list">
+            <li><div class="act-dot"></div>Vrij te verkennen naar eigen wens</li>
+            <li><div class="act-dot"></div>Shibuya Crossing – het drukste kruispunt ter wereld</li>
+            <li><div class="act-dot"></div>Harajuku & Takeshita Dori (mode & subculture)</li>
+            <li><div class="act-dot"></div>Meiji Jingu Shrine (groen & rustig, midden in de stad)</li>
+            <li><div class="act-dot"></div>Ginza – high-end winkelen</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 4: Sat 28 Mar — Hakone -->
+    <div class="day-card" id="day4">
+      <div class="day-card-header" onclick="toggleCard('day4')">
+        <div class="day-num-badge">Dag 4</div>
+        <div class="day-header-text">
+          <div class="day-name">Zaterdag 28 maart</div>
+          <div class="day-date">Dagtrip Hakone 🗻</div>
+        </div>
+        <div class="day-chevron">⌄</div>
+      </div>
+      <div class="day-card-body">
+        <div class="day-card-inner">
+          <div class="location-chip">📍 Tokio → Hakone → Tokio</div>
+          <ul class="activity-list">
+            <li><div class="act-dot"></div>Romancecar trein vanaf Shinjuku (¥1.200 supplement)</li>
+            <li><div class="act-dot"></div>Hakone Free Pass activeren (¥6.100 pp – dekt alles)</li>
+            <li><div class="act-dot"></div>Hakone Open Air Museum</li>
+            <li><div class="act-dot"></div>Owakudani – vulkanisch gebied & zwarte eieren</li>
+            <li><div class="act-dot"></div>Ropeway over de vulkaan (bij helder weer zicht op Fuji 🗻)</li>
+            <li><div class="act-dot"></div>Piratenschip over Lake Ashi</li>
+            <li><div class="act-dot"></div>Terug naar Tokio per trein</li>
+          </ul>
+          <div class="note-box">
+            <strong>🎟️ Hakone Free Pass – dekt:</strong>
+            Romancecar (exclusief supplement), kabelbaannen, ropeway, piratenschip over het meer, bussen in het gebied.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHINKANSEN -->
+    <div style="margin: 20px 16px 0;">
+      <div style="background: white; border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 14px;">
+        <div style="font-size: 36px;">🚄</div>
+        <div>
+          <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Shinkansen</div>
+          <div style="font-size: 16px; font-weight: 800;">Tokio → Kyoto</div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Zondag 29 maart &nbsp;·&nbsp; vertrek 11:12</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KYOTO SECTION -->
+    <div class="city-banner" id="kyoto-anchor" style="margin-top: 20px;">
+      ⛩️ KYOTO
+      <span class="city-sub">29 mrt – 1 apr</span>
+    </div>
+
+    <!-- Day 5: Sun 29 Mar -->
+    <div class="day-card" id="day5">
+      <div class="day-card-header" onclick="toggleCard('day5')">
+        <div class="day-num-badge">Dag 5</div>
+        <div class="day-header-text">
+          <div class="day-name">Zondag 29 maart</div>
+          <div class="day-date">Aankomst Kyoto ⛩️</div>
+        </div>
+        <div class="day-chevron">⌄</div>
+      </div>
+      <div class="day-card-body">
+        <div class="day-card-inner">
+          <div class="location-chip">📍 Tokio → Kyoto</div>
+          <ul class="activity-list">
+            <li><div class="act-dot"></div>Shinkansen vertrek Tokio 11:12 (~2,5 uur rit)</li>
+            <li><div class="act-dot"></div>Aankomst Kyoto Station – inchecken hotel</li>
+            <li><div class="act-dot"></div>Eerste verkenning: Nishiki Market ("Kyoto's keuken")</li>
+            <li><div class="act-dot"></div>Avondwandeling Gion district (geisha-wijk)</li>
+          </ul>
+          <div class="note-box">
+            <strong>🏨 Hotel</strong>
+            Hotel Intergate Kyoto Shijo Shinmachi – centraal gelegen
+          </div>
+          <a href="https://www.booking.com/hotel/jp/hotel-intergate-kyoto-shijoshinmachi.nl.html" target="_blank" rel="noopener" class="hotel-btn">🏨 Hotel bekijken →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 6: Mon 30 Mar -->
+    <div class="day-card" id="day6">
+      <div class="day-card-header" onclick="toggleCard('day6')">
+        <div class="day-num-badge">Dag 6</div>
+        <div class="day-header-text">
+          <div class="day-name">Maandag 30 maart 🎂</div>
+          <div class="day-date">Kyoto + Osaka avond 🌃</div>
+        </div>
+        <div class="day-chevron">⌄</div>
+      </div>
+      <div class="day-card-body">
+        <div class="day-card-inner">
+          <div class="location-chip">📍 Kyoto / Osaka</div>
+          <ul class="activity-list">
+            <li><div class="act-dot"></div>Ochtend: vrij in Kyoto (tempels / winkelen)</li>
+            <li><div class="act-dot"></div>15:30 – JR Special Rapid naar Osaka (~30 min)</li>
+          </ul>
+          <div class="note-box" style="background:#fff0f5; border-color:#e91e8c; margin-bottom: 10px;">
+            <strong style="color:#c0175a;">🎂 Vaderdag – Happy Birthday!</strong>
+            Osaka avond ter ere van papa's verjaardag 🎉
+          </div>
+          <div style="margin: 10px 0 6px; font-size: 13px; font-weight: 700; color: var(--text-muted);">🌆 Osaka Avond Loop:</div>
+          <div class="osaka-timeline">
+            <div class="osaka-stop">
+              <div class="osaka-time">16:00</div>
+              <div class="osaka-content">
+                <div class="osaka-name">Umeda Sky Building</div>
+                <div class="osaka-desc">Futuristisch observatiedek, perfecte zonsondergang views 🌅</div>
+              </div>
+            </div>
+            <div class="osaka-stop">
+              <div class="osaka-time">17:30</div>
+              <div class="osaka-content">
+                <div class="osaka-name">Den Den Town / Nipponbashi</div>
+                <div class="osaka-desc">Osaka's Akihabara – elektronica, retro gaming, anime 🎮</div>
+              </div>
+            </div>
+            <div class="osaka-stop">
+              <div class="osaka-time">19:00</div>
+              <div class="osaka-content">
+                <div class="osaka-name">Dotonbori Neon Walk 🦀</div>
+                <div class="osaka-desc">Glico Running Man, takoyaki, okonomiyaki, enorme krab reclame</div>
+              </div>
+            </div>
+            <div class="osaka-stop">
+              <div class="osaka-time">20:30</div>
+              <div class="osaka-content">
+                <div class="osaka-name">Hozenji Yokocho</div>
+                <div class="osaka-desc">Smal steegje met keistenen, mos-begroeid standbeeld, oud Japan gevoel 🏮</div>
+              </div>
+            </div>
+            <div class="osaka-stop">
+              <div class="osaka-time">21:30</div>
+              <div class="osaka-content">
+                <div class="osaka-name">Terug naar Kyoto</div>
+                <div class="osaka-desc">JR Special Rapid (~30 min) terug naar hotel</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 7: Tue 31 Mar — Osaka day trip -->
+    <div class="day-card" id="day7">
+      <div class="day-card-header" onclick="toggleCard('day7')">
+        <div class="day-num-badge">Dag 7</div>
+        <div class="day-header-text">
+          <div class="day-name">Dinsdag 31 maart</div>
+          <div class="day-date">Fushimi Inari 🦊</div>
+        </div>
+        <div class="day-chevron">⌄</div>
+      </div>
+      <div class="day-card-body">
+        <div class="day-card-inner">
+          <div class="location-chip">📍 Kyoto</div>
+          <ul class="activity-list">
+            <li><div class="act-dot"></div>Fushimi Inari – duizenden rode torii-poorten de berg op</li>
+            <li><div class="act-dot"></div>Hike tot de top (ca. 2-3 uur retour) of half circuit</li>
+            <li><div class="act-dot"></div>Nishiki Market lunch</li>
+            <li><div class="act-dot"></div>Philosopher's Path – kanaalwandeling langs tempels</li>
+            <li><div class="act-dot"></div>Nanzenji tempel (indrukwekkend aquaduct)</li>
+          </ul>
+          <div class="note-box">
+            <strong>🦊 Fushimi Inari tip</strong>
+            Ga vroeg (voor 8:00) of in de avond – overdag erg druk. 's Avonds magisch verlicht en bijna leeg!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 8: Wed 1 Apr — Kyoto klassiekers -->
+    <div class="day-card" id="day8">
+      <div class="day-card-header" onclick="toggleCard('day8')">
+        <div class="day-num-badge">Dag 8</div>
+        <div class="day-header-text">
+          <div class="day-name">Woensdag 1 april</div>
+          <div class="day-date">Kyoto klassiekers 🌅</div>
+        </div>
+        <div class="day-chevron">⌄</div>
+      </div>
+      <div class="day-card-body">
+        <div class="day-card-inner">
+          <div class="location-chip">📍 Kyoto</div>
+          <ul class="activity-list">
+            <li><div class="act-dot"></div>Kinkakuji – Gouden Paviljoen (vroeg gaan, minder druk)</li>
+            <li><div class="act-dot"></div>Ryoanji – zen-rotstuin</li>
+            <li><div class="act-dot"></div>Lunch: kaiseki of soba noodles in Arashiyama</li>
+            <li><div class="act-dot"></div>Arashiyama bamboegroove</li>
+            <li><div class="act-dot"></div>Tenryuji tempel & tuin</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLIGHT BACK -->
+    <div class="flight-card return" style="margin-top: 20px;">
+      <div class="fc-label">🏠 Terugreis</div>
+      <div class="fc-route">KIX → AMS</div>
+      <div class="fc-num">KL868 &nbsp;·&nbsp; KLM</div>
+      <div class="flight-plane">🛬</div>
+      <div class="fc-row">
+        <div class="fc-item">Vertrek<span>do 2 apr – 11:55</span></div>
+        <div class="fc-item">Aankomst<span>do 2 apr – 19:10</span></div>
+      </div>
+      <div class="note-box" style="background:rgba(255,255,255,0.2); border-color: white; color: white; margin-top: 12px;">
+        <strong style="color:white;">🚆 Luchthaven Osaka KIX bereiken:</strong>
+        JR Haruka Express: ~75 min · Limousine Bus: ~90 min
+      </div>
+    </div>
+
+    <div class="blossom-row" style="margin-top: 20px;">🌸 🌸 🌸 🌸 🌸</div>
+    <div class="page-bottom"></div>
+  </section>
+
+  <!-- ═══ TOKYO TAB ═══ -->
+  <section class="tab-section" id="tab-tokyo">
+    <div class="city-banner" style="margin-top: 0;">🗼 Wat te doen – TOKIO</div>
+
+    <div class="todo-section">
+      <div class="accordion-item open" id="acc-akihabara">
+        <div class="accordion-header" onclick="toggleAccordion('acc-akihabara')">
+          <div class="accordion-icon">🎮</div>
+          <div class="accordion-title">Akihabara</div>
+          <div class="accordion-chevron">⌄</div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div class="todo-item">
+              <div class="todo-title">Elektronica & tech heaven</div>
+              <div class="todo-desc">Akihabara is het Mekka voor tech-liefhebbers. Meerdere verdiepingen elektronica, onderdelen, retro games en anime merchandise.</div>
+              <a href="https://maps.google.com/?q=Akihabara+Electric+Town+Tokyo" target="_blank" rel="noopener" class="maps-link">🗺 Open in Maps</a>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Yodobashi Akiba</div>
+              <div class="todo-desc">Megawinkel met 8 verdiepingen elektronica – alles onder één dak. Belastingvrij winkelen mogelijk met paspoort.</div>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Super Potato</div>
+              <div class="todo-desc">Iconische retro game shop – Famicom, Super Nintendo, Game Boy – nostalgie-overload.</div>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Maid Café</div>
+              <div class="todo-desc">Unieke Japanse ervaring – bediening in maidkostuum, bijzondere sfeer. @home café is populair.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="acc-shinjuku">
+        <div class="accordion-header" onclick="toggleAccordion('acc-shinjuku')">
+          <div class="accordion-icon">🌃</div>
+          <div class="accordion-title">Shinjuku</div>
+          <div class="accordion-chevron">⌄</div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div class="todo-item">
+              <div class="todo-title">Fashion & shopping</div>
+              <div class="todo-desc">Takashimaya Times Square, Isetan, Uniqlo, Don Quijote – alles te vinden in Shinjuku.</div>
+              <a href="https://maps.google.com/?q=Shinjuku+Tokyo" target="_blank" rel="noopener" class="maps-link">🗺 Open in Maps</a>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Omoide Yokocho (Memory Lane)</div>
+              <div class="todo-desc">Smal steegje vol yakitori-kraampjes, neon & rook. Authentiek en goedkoop eten en drinken.</div>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Golden Gai</div>
+              <div class="todo-desc">~200 micro-bars over 6 steegjes. Elke bar heeft eigen stijl & max. 10 plekken. Perfect voor een drankje.</div>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Kabukicho</div>
+              <div class="todo-desc">Tokio's entertainment district – neon, arcades, karaoke, restaurants. 's Avonds indrukwekkend.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="acc-hakone">
+        <div class="accordion-header" onclick="toggleAccordion('acc-hakone')">
+          <div class="accordion-icon">🗻</div>
+          <div class="accordion-title">Hakone Dagtrip</div>
+          <div class="accordion-chevron">⌄</div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div class="todo-item">
+              <div class="todo-title">Hakone Free Pass – ¥6.100 pp</div>
+              <div class="todo-desc">Koop in Shinjuku. Dekt Odakyu trein, kabelbaannen, ropeway, piratenschip en bussen in Hakone.</div>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Romancecar supplement – ¥1.200 pp</div>
+              <div class="todo-desc">Comfortabele panoramatrein van Shinjuku naar Hakone. Reserveer van tevoren!</div>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Owakudani Vulkaangebied</div>
+              <div class="todo-desc">Dampende zwavelvelden. Proef de beroemde zwarte eieren (kuro tamago) – gaar in hete bronnen.</div>
+              <a href="https://maps.google.com/?q=Owakudani+Hakone" target="_blank" rel="noopener" class="maps-link">🗺 Open in Maps</a>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Ropeway over de vulkaan</div>
+              <div class="todo-desc">Bij helder weer spectaculair uitzicht op de Fuji 🗻. Tip: ochtend is helderder dan middag.</div>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Piratenschip – Lake Ashi</div>
+              <div class="todo-desc">Cruise over het meer in een piratenschip-replica. Fuji op de achtergrond als het meewerkt.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="acc-more-tokyo">
+        <div class="accordion-header" onclick="toggleAccordion('acc-more-tokyo')">
+          <div class="accordion-icon">🏙️</div>
+          <div class="accordion-title">Meer Tokio</div>
+          <div class="accordion-chevron">⌄</div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div class="todo-item">
+              <div class="todo-title">Shibuya Crossing</div>
+              <div class="todo-desc">Het drukste voetgangerskruispunt ter wereld. 's Avonds van de Starbucks of Mag's Park erboven bekijken.</div>
+              <a href="https://maps.google.com/?q=Shibuya+Crossing+Tokyo" target="_blank" rel="noopener" class="maps-link">🗺 Open in Maps</a>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Harajuku – Takeshita Dori</div>
+              <div class="todo-desc">Kleurrijke mode-subcultures, crepe-kramen, vintage shops. Uniek Japans straaterfgoed.</div>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Meiji Jingu Shrine</div>
+              <div class="todo-desc">Groen & sereen Shinto heiligdom midden in de stad. Gratis te bezoeken. Direct naast Harajuku.</div>
+              <a href="https://maps.google.com/?q=Meiji+Jingu+Shrine+Tokyo" target="_blank" rel="noopener" class="maps-link">🗺 Open in Maps</a>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Asakusa & Senso-ji</div>
+              <div class="todo-desc">Tokio's oudste tempel. Nakamise Shopping Street ernaartoe vol souvenirs. Vroeg gaan voor minder drukte.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-bottom"></div>
+  </section>
+
+  <!-- ═══ KYOTO TAB ═══ -->
+  <section class="tab-section" id="tab-kyoto">
+    <div class="city-banner" style="margin-top: 0;">⛩️ Wat te doen – KYOTO & OSAKA</div>
+
+    <div class="todo-section">
+      <div class="accordion-item open" id="acc-kinkakuji">
+        <div class="accordion-header" onclick="toggleAccordion('acc-kinkakuji')">
+          <div class="accordion-icon">🥇</div>
+          <div class="accordion-title">Kinkakuji – Gouden Paviljoen</div>
+          <div class="accordion-chevron">⌄</div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div class="todo-item">
+              <div class="todo-title">Gouden Paviljoen</div>
+              <div class="todo-desc">Zen tempel volledig bedekt met goudfolie, weerspiegeld in het vijvermeer. Wereldberoemde foto-locatie. Entree ¥500.</div>
+              <div class="todo-time">💡 Ga vroeg – voor 9:00 uur!</div>
+              <a href="https://maps.google.com/?q=Kinkakuji+Kyoto" target="_blank" rel="noopener" class="maps-link">🗺 Open in Maps</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="acc-fushimi">
+        <div class="accordion-header" onclick="toggleAccordion('acc-fushimi')">
+          <div class="accordion-icon">⛩️</div>
+          <div class="accordion-title">Fushimi Inari</div>
+          <div class="accordion-chevron">⌄</div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div class="todo-item">
+              <div class="todo-title">Duizenden rode torii-poorten</div>
+              <div class="todo-desc">Eindeloze tunnels van oranje-rode torii-poorten die de berg oplopen. Magische atmosfeer, zeker 's avonds. Gratis entree. Heiligdom van de vos-god Inari.</div>
+              <div class="todo-time">🌙 Tip: ga laat in de avond – leeg & verlicht!</div>
+              <a href="https://maps.google.com/?q=Fushimi+Inari+Kyoto" target="_blank" rel="noopener" class="maps-link">🗺 Open in Maps</a>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Wandeling naar de top</div>
+              <div class="todo-desc">Volledige circuit: ca. 2-3 uur. Halverwege al prachtige views. Genoeg te eten/drinken onderweg.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="acc-osaka-evening">
+        <div class="accordion-header" onclick="toggleAccordion('acc-osaka-evening')">
+          <div class="accordion-icon">🌆</div>
+          <div class="accordion-title">Osaka Avond Loop</div>
+          <div class="accordion-chevron">⌄</div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div class="todo-item">
+              <div class="todo-title">🚆 Reizen</div>
+              <div class="todo-desc">JR Special Rapid van Kyoto Station naar Osaka (~30 min, ¥560). Terug ook met JR.</div>
+            </div>
+            <div class="osaka-timeline">
+              <div class="osaka-stop">
+                <div class="osaka-time">16:00</div>
+                <div class="osaka-content">
+                  <div class="osaka-name">Umeda Sky Building</div>
+                  <div class="osaka-desc">Futuristisch gebouw met spectaculair observatiedek boven de daken. Perfect voor zonsondergang 🌅</div>
+                  <a href="https://maps.google.com/?q=Umeda+Sky+Building+Osaka" target="_blank" rel="noopener" class="maps-link">🗺 Maps</a>
+                </div>
+              </div>
+              <div class="osaka-stop">
+                <div class="osaka-time">17:30</div>
+                <div class="osaka-content">
+                  <div class="osaka-name">Den Den Town / Nipponbashi 🎮</div>
+                  <div class="osaka-desc">Osaka's Akihabara – elektronica, retro gaming, anime & manga. Vergelijkbaar maar rustiger dan Tokio.</div>
+                  <a href="https://maps.google.com/?q=Den+Den+Town+Osaka" target="_blank" rel="noopener" class="maps-link">🗺 Maps</a>
+                </div>
+              </div>
+              <div class="osaka-stop">
+                <div class="osaka-time">19:00</div>
+                <div class="osaka-content">
+                  <div class="osaka-name">Dotonbori Neon Walk 🦀</div>
+                  <div class="osaka-desc">Iconic neonreclames incl. Glico Running Man. Eten: takoyaki (octopusballen), okonomiyaki, ramen. De reusachtige krab!</div>
+                  <a href="https://maps.google.com/?q=Dotonbori+Osaka" target="_blank" rel="noopener" class="maps-link">🗺 Maps</a>
+                </div>
+              </div>
+              <div class="osaka-stop">
+                <div class="osaka-time">20:30</div>
+                <div class="osaka-content">
+                  <div class="osaka-name">Hozenji Yokocho 🏮</div>
+                  <div class="osaka-desc">Smal, met keistenen geplaveid steegje. Mos-begroeid Fudo Myo standbeeld. Authentiek oud Japan gevoel, vlak naast Dotonbori.</div>
+                  <a href="https://maps.google.com/?q=Hozenji+Yokocho+Osaka" target="_blank" rel="noopener" class="maps-link">🗺 Maps</a>
+                </div>
+              </div>
+              <div class="osaka-stop">
+                <div class="osaka-time">21:30</div>
+                <div class="osaka-content">
+                  <div class="osaka-name">Terug naar Kyoto 🚆</div>
+                  <div class="osaka-desc">JR Special Rapid van Osaka naar Kyoto (~30 min). Let op laatste treintijden!</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="acc-more-kyoto">
+        <div class="accordion-header" onclick="toggleAccordion('acc-more-kyoto')">
+          <div class="accordion-icon">🍵</div>
+          <div class="accordion-title">Meer Kyoto</div>
+          <div class="accordion-chevron">⌄</div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <div class="todo-item">
+              <div class="todo-title">Arashiyama Bamboegroove</div>
+              <div class="todo-desc">Hoge bamboestengels aan beide kanten van het pad. Sfeervol & fotogeniek. Gaan voor 8:00 uur.</div>
+              <a href="https://maps.google.com/?q=Arashiyama+Bamboo+Grove+Kyoto" target="_blank" rel="noopener" class="maps-link">🗺 Open in Maps</a>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Gion District – Geishabuurt</div>
+              <div class="todo-desc">Historisch geishadistrict. Hanamikoji Street bij zonsondergang prachtig. Kans om geisha of maiko te spotten.</div>
+              <a href="https://maps.google.com/?q=Gion+Kyoto" target="_blank" rel="noopener" class="maps-link">🗺 Open in Maps</a>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Philosopher's Path</div>
+              <div class="todo-desc">Kanaalwandeling langs kersenbloesems (eind maart perfect!) en kleine tempels. Rustgevend & mooi.</div>
+            </div>
+            <div class="todo-item">
+              <div class="todo-title">Nishiki Market</div>
+              <div class="todo-desc">"Kyoto's keuken" – 5 blokken lange overdekte markt vol verse tofu, pickles, zeevruchten & streetfood.</div>
+              <a href="https://maps.google.com/?q=Nishiki+Market+Kyoto" target="_blank" rel="noopener" class="maps-link">🗺 Open in Maps</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-bottom"></div>
+  </section>
+
+  <!-- ═══ INFO TAB ═══ -->
+  <section class="tab-section" id="tab-info">
+
+    <div class="info-card" style="margin-top: 16px;">
+      <h3>✈️ Vluchten</h3>
+      <div class="info-row">
+        <div class="info-label">Heenvlucht</div>
+        <div class="info-value">KL861 · di 24 mrt 14:20</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">AMS → NRT</div>
+        <div class="info-value">aankomst wo 25 mrt 11:45</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Terugvlucht</div>
+        <div class="info-value">KL868 · do 2 apr 11:55</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">KIX → AMS</div>
+        <div class="info-value">aankomst do 2 apr 19:10</div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3>🏨 Hotels</h3>
+      <div class="info-row">
+        <div class="info-label">Tokio</div>
+        <div class="info-value">25–28 mrt (4 nachten)</div>
+      </div>
+      <a href="https://www.booking.com/hotel/jp/dong-ji-suteixin-su-isutosaido.nl.html" target="_blank" rel="noopener" class="hotel-btn" style="margin-bottom: 12px;">🏨 Tokio hotel →</a>
+      <div class="info-row">
+        <div class="info-label">Kyoto</div>
+        <div class="info-value">29 mrt–1 apr (4 nachten)</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Hotel</div>
+        <div class="info-value">Intergate Kyoto Shijo Shinmachi</div>
+      </div>
+      <a href="https://www.booking.com/hotel/jp/hotel-intergate-kyoto-shijoshinmachi.nl.html" target="_blank" rel="noopener" class="hotel-btn">🏨 Kyoto hotel →</a>
+    </div>
+
+    <div class="info-card">
+      <h3>🚆 Transport</h3>
+      <div class="info-row">
+        <div class="info-label">Narita → Tokio</div>
+        <div class="info-value">Narita Express (~60 min)</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Tokio → Kyoto</div>
+        <div class="info-value">Shinkansen 11:12 (~2,5 uur)</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Kyoto → Osaka</div>
+        <div class="info-value">JR Special Rapid (~30 min)</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Osaka → KIX</div>
+        <div class="info-value">Haruka Express ~75 min<br/>Limousine Bus ~90 min</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Stad metro</div>
+        <div class="info-value">Suica / Pasmo IC-kaart</div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3>🎟️ Hakone Pass</h3>
+      <div class="info-row">
+        <div class="info-label">Free Pass</div>
+        <div class="info-value">¥6.100 per persoon</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Romancecar</div>
+        <div class="info-value">¥1.200 supplement (pp)</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Inbegrepen</div>
+        <div class="info-value">Kabelbaannen, ropeway, piratenschip, bussen</div>
+      </div>
+      <div class="tip-box">⚠️ Reserveer de Romancecar van tevoren – vol op populaire dagen!</div>
+    </div>
+
+    <div class="info-card">
+      <h3>💡 Handige tips</h3>
+      <div class="todo-item">
+        <div class="todo-title">💴 Contant geld</div>
+        <div class="todo-desc">Japan is nog deels cash-based. Haal yen op bij 7-Eleven of Japan Post ATM's (accepteren buitenlandse passen).</div>
+      </div>
+      <div class="todo-item">
+        <div class="todo-title">📶 Pocket WiFi of SIM</div>
+        <div class="todo-desc">Bestel van tevoren online of haal op op het vliegveld. IIJmio, Sakura Mobile of klant-vriendelijke eSIM-opties.</div>
+      </div>
+      <div class="todo-item">
+        <div class="todo-title">🗣️ Taal</div>
+        <div class="todo-desc">Google Translate met camerafunctie werkt goed voor menu's & borden. Download offline Japanese pakket.</div>
+      </div>
+      <div class="todo-item">
+        <div class="todo-title">🛍️ Tax-free winkelen</div>
+        <div class="todo-desc">Bij aankopen >¥5.000: belastingvrij kopen met paspoort. Vraag altijd naar "tax free".</div>
+      </div>
+      <div class="todo-item">
+        <div class="todo-title">🌸 Kersenbloesem</div>
+        <div class="todo-desc">Einde maart / begin april is sakura-seizoen! Maruyama Park (Kyoto) en Ueno Park (Tokio) zijn toplocaties.</div>
+      </div>
+    </div>
+
+    <div class="blossom-row" style="margin: 16px 0 0;">🌸 良い旅を！ 🌸</div>
+    <div style="text-align: center; font-size: 12px; color: var(--text-muted); padding: 6px 0 4px;">Goede reis!</div>
+    <div class="page-bottom"></div>
+  </section>
+
+  <!-- ═══ BOTTOM NAV ═══ -->
+  <nav class="bottom-nav">
+    <button class="active" id="nav-schedule" onclick="switchTab('schedule')">
+      <span class="nav-icon">📅</span>
+      Schema
+    </button>
+    <button id="nav-tokyo" onclick="switchTab('tokyo')">
+      <span class="nav-icon">🗼</span>
+      Tokio
+    </button>
+    <button id="nav-kyoto" onclick="switchTab('kyoto')">
+      <span class="nav-icon">⛩️</span>
+      Kyoto
+    </button>
+    <button id="nav-info" onclick="switchTab('info')">
+      <span class="nav-icon">ℹ️</span>
+      Info
+    </button>
+  </nav>
+
+</div>
+
+<script>
+  // ── COUNTDOWN ──
+  (function() {
+    var tripStart = new Date('2026-03-24T00:00:00');
+    var now = new Date();
+    var diff = Math.floor((tripStart - now) / (1000 * 60 * 60 * 24));
+    var bar = document.getElementById('countdown-bar');
+    var txt = document.getElementById('countdown-text');
+    if (diff > 0) {
+      txt.innerHTML = 'Nog <span class="count-num">' + diff + '</span> dagen tot vertrek!';
+    } else if (diff === 0) {
+      txt.innerHTML = '🎉 Vandaag vertrekken we!';
+    } else if (diff > -10) {
+      txt.innerHTML = '✈️ We zijn in Japan! ' + Math.abs(diff) + ' dagen onderweg';
+    } else {
+      txt.innerHTML = '🌸 Wat een geweldige reis was dat!';
+    }
+  })();
+
+  // ── TAB SWITCHING ──
+  function switchTab(name) {
+    document.querySelectorAll('.tab-section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.bottom-nav button').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('tab-' + name).classList.add('active');
+    document.getElementById('nav-' + name).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── DAY CARD TOGGLE ──
+  function toggleCard(id) {
+    var card = document.getElementById(id);
+    card.classList.toggle('open');
+  }
+
+  // ── ACCORDION TOGGLE ──
+  function toggleAccordion(id) {
+    var item = document.getElementById(id);
+    item.classList.toggle('open');
+  }
+
+  // Open first day card by default
+  document.getElementById('day1').classList.add('open');
+</script>
+</body>
+</html>
