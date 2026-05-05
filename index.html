@@ -1,0 +1,2325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tuscany 🇮🇹">
+<title>Tuscany 🇮🇹</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { height: 100%; background: #1E1208; }
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: #F7F2E9;
+  color: #1E1208;
+  height: 100%;
+  max-width: 390px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── CSS VARIABLES ── */
+:root {
+  --terracotta: #B8542A;
+  --terracotta-light: #D4724A;
+  --ochre: #C9983A;
+  --gold: #D4A847;
+  --ink: #1E1208;
+  --ink-soft: #3D2B1A;
+  --parchment: #F7F2E9;
+  --parchment-dark: #EDE7D9;
+  --sage: #8A9E7F;
+  --sage-light: #C4D4BC;
+  --amber: #E8A020;
+  --amber-bg: #FEF3DC;
+  --blue: #2A6496;
+  --blue-bg: #EAF2F8;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --nav-height: 64px;
+}
+
+/* ── SCREEN SYSTEM ── */
+.app-wrap {
+  position: fixed;
+  inset: 0;
+  max-width: 390px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: #F7F2E9;
+}
+
+.screen {
+  display: none;
+  flex: 1;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(var(--nav-height) + var(--safe-bottom) + 16px);
+}
+.screen.active { display: block; }
+
+/* Days sub-screens */
+.day-screen {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: var(--parchment);
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(var(--nav-height) + var(--safe-bottom) + 24px);
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.day-screen.open {
+  display: block;
+  transform: translateX(0);
+}
+.days-container {
+  position: relative;
+  height: 100%;
+}
+#screen-days {
+  padding: 0;
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position: relative;
+  z-index: 100;
+  display: flex;
+  background: rgba(247, 242, 233, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(30,18,8,0.1);
+  padding-bottom: var(--safe-bottom);
+  height: calc(var(--nav-height) + var(--safe-bottom));
+}
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 44px;
+  padding: 8px 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(30,18,8,0.4);
+  transition: color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-btn:active { transform: scale(0.93); }
+.nav-btn.active { color: var(--terracotta); }
+.nav-icon { font-size: 20px; line-height: 1; }
+.nav-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.nav-btn.active .nav-label { font-weight: 600; }
+
+/* ── HOME SCREEN ── */
+.home-hero {
+  background: linear-gradient(165deg, var(--ink) 0%, #3D2010 55%, #5C2E14 100%);
+  padding: calc(var(--safe-top) + 32px) 24px 36px;
+  position: relative;
+  overflow: hidden;
+}
+.home-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 10px;
+  position: relative;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--parchment);
+  margin-bottom: 8px;
+  position: relative;
+}
+.hero-title em { font-style: italic; color: var(--gold); }
+.hero-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(247,242,233,0.65);
+  margin-bottom: 28px;
+  position: relative;
+}
+.hero-stats {
+  display: flex;
+  gap: 0;
+  position: relative;
+}
+.hero-stat {
+  flex: 1;
+  text-align: center;
+  padding: 12px 8px;
+  border-right: 1px solid rgba(247,242,233,0.12);
+}
+.hero-stat:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--parchment);
+  line-height: 1;
+  display: block;
+}
+.stat-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: rgba(247,242,233,0.5);
+  text-transform: uppercase;
+  display: block;
+  margin-top: 4px;
+}
+
+.home-section { padding: 28px 20px 0; }
+.section-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(30,18,8,0.4);
+  margin-bottom: 14px;
+}
+
+/* Flight cards */
+.flight-cards { display: flex; flex-direction: column; gap: 10px; }
+.flight-card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px 18px;
+  border: 1px solid rgba(30,18,8,0.07);
+}
+.flight-route {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.flight-city {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.flight-arrow {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.flight-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--terracotta), var(--ochre));
+}
+.flight-plane { font-size: 16px; }
+.flight-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flight-date {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.flight-time {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--terracotta);
+}
+.flight-direction {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sage);
+}
+
+/* Book Ahead */
+.book-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+.book-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: white;
+  border-radius: 14px;
+  padding: 16px 18px;
+  text-decoration: none;
+  color: var(--ink);
+  border: 1px solid rgba(30,18,8,0.07);
+  min-height: 44px;
+  transition: background 0.15s;
+}
+.book-item:active { background: var(--parchment-dark); transform: scale(0.98); }
+.book-emoji { font-size: 22px; }
+.book-name {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+}
+.book-arrow {
+  font-size: 16px;
+  color: var(--terracotta);
+  font-weight: 300;
+}
+
+/* ── DAYS LIST ── */
+.days-list-inner {
+  padding: calc(var(--safe-top) + 20px) 20px 0;
+}
+.days-list-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+.day-cards-list { display: flex; flex-direction: column; gap: 12px; }
+
+.day-card {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  border: 1px solid rgba(30,18,8,0.07);
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+  min-height: 44px;
+  position: relative;
+  overflow: hidden;
+}
+.day-card:active { transform: scale(0.98); background: var(--parchment); }
+.day-card.birthday { border: 1.5px solid var(--gold); }
+.day-card.birthday::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(212,168,71,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.day-num-big {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 300;
+  line-height: 1;
+  color: rgba(30,18,8,0.15);
+  min-width: 48px;
+  text-align: center;
+}
+.day-card.birthday .day-num-big { color: rgba(212,168,71,0.35); }
+
+.day-card-body { flex: 1; }
+.day-card-date {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-bottom: 4px;
+}
+.day-card.birthday .day-card-date { color: var(--gold); }
+.day-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.day-card-summary {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+.day-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 9px;
+  border-radius: 20px;
+  background: var(--parchment-dark);
+  color: var(--ink-soft);
+}
+.badge.gold { background: rgba(212,168,71,0.15); color: #7A5A10; }
+.badge.terra { background: rgba(184,84,42,0.12); color: var(--terracotta); }
+.badge.sage { background: rgba(138,158,127,0.2); color: #4A6A40; }
+.day-card-chevron {
+  color: rgba(30,18,8,0.25);
+  font-size: 18px;
+  margin-top: 14px;
+  align-self: center;
+}
+
+/* ── DAY DETAIL ── */
+.day-header {
+  background: linear-gradient(165deg, var(--ink) 0%, #3D2010 100%);
+  padding: calc(var(--safe-top) + 16px) 20px 28px;
+  position: relative;
+}
+.day-header.birthday-header {
+  background: linear-gradient(165deg, #2A1A00 0%, #5C3A08 55%, #3D2010 100%);
+}
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: rgba(247,242,233,0.7);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 8px 0;
+  margin-bottom: 16px;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+.back-btn:active { color: var(--parchment); }
+.day-header-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 6px;
+}
+.day-header.birthday-header .day-header-num { color: var(--gold); }
+.day-header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--parchment);
+  margin-bottom: 6px;
+}
+.day-header-tagline {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(247,242,233,0.6);
+  margin-bottom: 16px;
+}
+.day-header-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.day-header-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 11px;
+  border-radius: 20px;
+  background: rgba(247,242,233,0.12);
+  color: rgba(247,242,233,0.85);
+}
+.day-header.birthday-header .day-header-badge.birthday {
+  background: rgba(212,168,71,0.25);
+  color: var(--gold);
+}
+
+/* ── TIMELINE ── */
+.timeline {
+  padding: 24px 20px;
+}
+.timeline-stop {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 0;
+  position: relative;
+}
+.timeline-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20px;
+  flex-shrink: 0;
+}
+.tl-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--terracotta);
+  flex-shrink: 0;
+  margin-top: 4px;
+  border: 2px solid var(--parchment);
+  box-shadow: 0 0 0 1.5px currentColor;
+}
+.tl-dot.blue { color: var(--blue); background: var(--blue); }
+.tl-dot.gold { color: var(--gold); background: var(--gold); }
+.tl-dot.green { color: var(--sage); background: var(--sage); }
+.tl-dot.terra { color: var(--terracotta); background: var(--terracotta); }
+.tl-line {
+  flex: 1;
+  width: 1.5px;
+  background: rgba(30,18,8,0.1);
+  margin: 4px 0;
+  min-height: 16px;
+}
+.timeline-stop:last-child .tl-line { display: none; }
+
+.tl-card {
+  flex: 1;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+.tl-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 16px;
+  background: white;
+  border-radius: 14px 14px 0 0;
+  border: 1px solid rgba(30,18,8,0.07);
+  border-bottom: none;
+  transition: background 0.15s;
+  min-height: 44px;
+}
+.tl-card.collapsed .tl-card-head {
+  border-radius: 14px;
+  border-bottom: 1px solid rgba(30,18,8,0.07);
+}
+.tl-card-head:active { background: var(--parchment); }
+.tl-time {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  margin-top: 1px;
+}
+.tl-card-main { flex: 1; }
+.tl-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+.tl-tag.arrive { background: rgba(42,100,150,0.12); color: var(--blue); }
+.tl-tag.food { background: rgba(212,168,71,0.18); color: #7A5A10; }
+.tl-tag.drive { background: rgba(30,18,8,0.08); color: var(--ink-soft); }
+.tl-tag.relax { background: rgba(138,158,127,0.2); color: #4A6A40; }
+.tl-tag.sight { background: rgba(184,84,42,0.1); color: var(--terracotta); }
+.tl-tag.museum { background: rgba(184,84,42,0.1); color: var(--terracotta); }
+.tl-tag.village { background: rgba(184,84,42,0.1); color: var(--terracotta); }
+.tl-tag.shop { background: rgba(138,158,127,0.2); color: #4A6A40; }
+.tl-tag.special { background: rgba(212,168,71,0.18); color: #7A5A10; }
+.tl-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.tl-expand-icon {
+  font-size: 12px;
+  color: rgba(30,18,8,0.3);
+  margin-top: 3px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.tl-card:not(.collapsed) .tl-expand-icon { transform: rotate(180deg); }
+
+.tl-card-body {
+  background: white;
+  border: 1px solid rgba(30,18,8,0.07);
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+  padding: 14px 16px 16px;
+  display: block;
+}
+.tl-card.collapsed .tl-card-body { display: none; }
+.tl-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+.tl-desc:last-child { margin-bottom: 0; }
+
+/* Callouts */
+.callout {
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  display: flex;
+  gap: 8px;
+}
+.callout:last-child { margin-bottom: 0; }
+.callout.warn { background: var(--amber-bg); color: #7A4800; border-left: 3px solid var(--amber); }
+.callout.info { background: var(--blue-bg); color: #1A4060; border-left: 3px solid var(--blue); }
+.callout.star { background: rgba(212,168,71,0.12); color: #6A4A00; border-left: 3px solid var(--gold); }
+.callout-icon { flex-shrink: 0; font-size: 14px; }
+
+/* Option blocks */
+.option-block {
+  background: var(--parchment-dark);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.option-block:last-child { margin-bottom: 0; }
+.option-label {
+  font-family: 'DM Sans', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-bottom: 4px;
+}
+.option-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.option-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+
+/* Action buttons */
+.tl-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.btn-map {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: none;
+  border: 1.5px solid var(--terracotta);
+  border-radius: 10px;
+  color: var(--terracotta);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.15s;
+}
+.btn-map:active { background: rgba(184,84,42,0.08); transform: scale(0.97); }
+.btn-book {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: var(--terracotta);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.15s;
+}
+.btn-book:active { background: var(--terracotta-light); transform: scale(0.97); }
+
+/* ── MAP SCREEN ── */
+.map-header {
+  padding: calc(var(--safe-top) + 20px) 20px 16px;
+  background: var(--parchment);
+}
+.map-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.map-subtitle { font-size: 13px; color: var(--ink-soft); opacity: 0.7; }
+
+
+.map-section { padding: 24px 20px 0; }
+.map-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(30,18,8,0.4);
+  margin-bottom: 10px;
+}
+.map-location-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.map-location-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-radius: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(30,18,8,0.07);
+  gap: 10px;
+  min-height: 44px;
+}
+.map-loc-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+.btn-map-sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 11px;
+  background: none;
+  border: 1.5px solid var(--terracotta);
+  border-radius: 8px;
+  color: var(--terracotta);
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  min-height: 36px;
+  flex-shrink: 0;
+}
+.btn-map-sm:active { background: rgba(184,84,42,0.08); }
+
+/* ── TIPS SCREEN ── */
+.tips-header {
+  padding: calc(var(--safe-top) + 20px) 20px 20px;
+}
+.tips-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--ink);
+}
+.tips-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 20px 24px;
+}
+.tip-card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px 14px;
+  border: 1px solid rgba(30,18,8,0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tip-emoji { font-size: 22px; }
+.tip-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.tip-body {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  opacity: 0.85;
+}
+.tip-card.wide { grid-column: span 2; }
+
+/* ── RESTAURANTS SCREEN ── */
+.restaurants-header {
+  padding: calc(var(--safe-top) + 20px) 20px 20px;
+}
+.restaurants-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--ink);
+}
+.rest-section { padding: 0 20px 24px; }
+.rest-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(30,18,8,0.4);
+  margin-bottom: 10px;
+  padding-top: 20px;
+}
+.rest-cards { display: flex; flex-direction: column; gap: 10px; }
+.rest-card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px 16px 14px;
+  border: 1px solid rgba(30,18,8,0.07);
+}
+.rest-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+.rest-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.rest-price {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sage);
+}
+.rest-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.rest-cuisine {
+  font-size: 12px;
+  color: var(--terracotta);
+  font-weight: 500;
+}
+.rest-sep { color: rgba(30,18,8,0.2); font-size: 12px; }
+.rest-desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+
+/* Hotel card */
+.hotel-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid rgba(30,18,8,0.07);
+  overflow: hidden;
+}
+.hotel-card-banner {
+  background: linear-gradient(135deg, #3D2010 0%, #6B3820 60%, #8A4A28 100%);
+  padding: 18px 20px 16px;
+  position: relative;
+}
+.hotel-card-banner::after {
+  content: '🏡';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 36px;
+  opacity: 0.6;
+}
+.hotel-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 4px;
+}
+.hotel-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--parchment);
+  line-height: 1.2;
+}
+.hotel-location {
+  font-size: 13px;
+  color: rgba(247,242,233,0.65);
+  margin-top: 3px;
+}
+.hotel-details {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hotel-row {
+  display: flex;
+  gap: 10px;
+}
+.hotel-detail-item {
+  flex: 1;
+  background: var(--parchment-dark);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.hotel-detail-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(30,18,8,0.4);
+  margin-bottom: 3px;
+}
+.hotel-detail-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.hotel-address {
+  background: var(--parchment-dark);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.hotel-address-text {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.hotel-actions {
+  display: flex;
+  gap: 8px;
+  padding: 0 20px 18px;
+}
+.hotel-actions .btn-map { flex: 1; justify-content: center; }
+.hotel-actions .btn-book { flex: 1; justify-content: center; }
+</style>
+</head>
+<body>
+<div class="app-wrap">
+
+  <!-- ══════════════ HOME ══════════════ -->
+  <div id="screen-home" class="screen active">
+    <div class="home-hero">
+      <div class="hero-eyebrow">Italy · May 2025</div>
+      <h1 class="hero-title">Pisa, Cinque Terre<br>&amp; <em>Florence</em></h1>
+      <p class="hero-subtitle">Gabi's Birthday Adventure · May 7–12, 2026</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="stat-num">5</span>
+          <span class="stat-label">Nights</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-num">5</span>
+          <span class="stat-label">Cities</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-num">1</span>
+          <span class="stat-label">Birthday</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">Gelato</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-section">
+      <div class="section-title">Flights</div>
+      <div class="flight-cards">
+        <div class="flight-card">
+          <div class="flight-route">
+            <span class="flight-city">EIN</span>
+            <div class="flight-arrow">
+              <div class="flight-line"></div>
+              <span class="flight-plane">✈</span>
+            </div>
+            <span class="flight-city">PSA</span>
+          </div>
+          <div class="flight-meta">
+            <div>
+              <div class="flight-direction">Outbound</div>
+              <div class="flight-date">Thu 7 May 2026</div>
+            </div>
+            <div class="flight-time">09:20 → 11:05</div>
+          </div>
+        </div>
+        <div class="flight-card">
+          <div class="flight-route">
+            <span class="flight-city">PSA</span>
+            <div class="flight-arrow">
+              <div class="flight-line"></div>
+              <span class="flight-plane">✈</span>
+            </div>
+            <span class="flight-city">EIN</span>
+          </div>
+          <div class="flight-meta">
+            <div>
+              <div class="flight-direction">Return · Car back by 12:00</div>
+              <div class="flight-date">Tue 12 May 2026</div>
+            </div>
+            <div class="flight-time">14:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-section">
+      <div class="section-title">Your Stay</div>
+      <div class="hotel-card">
+        <div class="hotel-card-banner">
+          <div class="hotel-eyebrow">5 nights · Check-in Thu 7 May</div>
+          <div class="hotel-name">La Locanda di Corrado</div>
+          <div class="hotel-location">Stabbia, Cerreto Guidi — Tuscany</div>
+        </div>
+        <div class="hotel-details">
+          <div class="hotel-row">
+            <div class="hotel-detail-item">
+              <div class="hotel-detail-label">Check-in</div>
+              <div class="hotel-detail-value">Thu 7 May</div>
+            </div>
+            <div class="hotel-detail-item">
+              <div class="hotel-detail-label">Check-out</div>
+              <div class="hotel-detail-value">Tue 12 May</div>
+            </div>
+          </div>
+          <div class="hotel-address">
+            <div class="hotel-detail-label">Address</div>
+            <div class="hotel-address-text">Via della Buca 10, Stabbia<br>50050 Cerreto Guidi (FI)</div>
+          </div>
+          <div class="hotel-address">
+            <div class="hotel-detail-label">Getting There from Pisa Airport</div>
+            <div class="hotel-address-text">~40 min via SGC FI-PI-LI motorway (toll-free). Take exit for Empoli/Cerreto Guidi, follow signs to Stabbia. Call ahead to arrange early check-in — the owners are welcoming and usually flexible.</div>
+          </div>
+        </div>
+        <div class="hotel-actions">
+          <a class="btn-map" href="maps.apple.com/?q=La+Locanda+di+Corrado+Stabbia&dirflg=d">📍 Directions</a>
+          <a class="btn-book" href="https://www.booking.com/hotel/it/la-locanda-di-corrado.en-gb.html" target="_blank">🏨 Booking</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-section">
+      <div class="section-title">Book Ahead</div>
+      <div class="book-list">
+        <a href="https://www.pastaclassflorence.com/" target="_blank" class="book-item">
+          <span class="book-emoji">🍝</span>
+          <span class="book-name">Pasta Class Florence</span>
+          <span class="book-arrow">↗</span>
+        </a>
+        <a href="https://www.uffizi.it/gli-uffizi" target="_blank" class="book-item">
+          <span class="book-emoji">🖼</span>
+          <span class="book-name">Uffizi Gallery</span>
+          <span class="book-arrow">↗</span>
+        </a>
+        <a href="https://www.opapisa.it/visita/torre-pendente/" target="_blank" class="book-item">
+          <span class="book-emoji">🗼</span>
+          <span class="book-name">Leaning Tower of Pisa</span>
+          <span class="book-arrow">↗</span>
+        </a>
+        <a href="https://www.trenitalia.com" target="_blank" class="book-item">
+          <span class="book-emoji">🚆</span>
+          <span class="book-name">Trenitalia (Cinque Terre trains)</span>
+          <span class="book-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ DAYS ══════════════ -->
+  <div id="screen-days" class="screen">
+    <div class="days-container">
+      <!-- Days List -->
+      <div id="days-list" class="days-list-inner">
+        <h2 class="days-list-title">Your Itinerary</h2>
+        <div class="day-cards-list">
+
+          <div class="day-card" onclick="openDay(1)">
+            <div class="day-num-big">1</div>
+            <div class="day-card-body">
+              <div class="day-card-date">Thu · 7 May</div>
+              <div class="day-card-title">Arrival, Lunch &amp; Pool</div>
+              <div class="day-card-summary">Land in Pisa, collect the car, settle into La Locanda di Corrado and ease into Tuscany with a pool afternoon.</div>
+              <div class="day-badges">
+                <span class="badge terra">✈ Arrival Day</span>
+                <span class="badge">🚗 ~40 min drive</span>
+                <span class="badge sage">☀️ Pool</span>
+              </div>
+            </div>
+            <div class="day-card-chevron">›</div>
+          </div>
+
+          <div class="day-card birthday" onclick="openDay(2)">
+            <div class="day-num-big">2</div>
+            <div class="day-card-body">
+              <div class="day-card-date">Fri · 8 May</div>
+              <div class="day-card-title">Cinque Terre 🎂</div>
+              <div class="day-card-summary">Gabi's birthday! Monterosso beach, birthday lunch at Miky, golden aperitivo at Nessun Dorma above Manarola.</div>
+              <div class="day-badges">
+                <span class="badge gold">🎂 Gabi's Birthday</span>
+                <span class="badge">🚗 ~1h20</span>
+                <span class="badge terra">🏖 Beach</span>
+              </div>
+            </div>
+            <div class="day-card-chevron">›</div>
+          </div>
+
+          <div class="day-card" onclick="openDay(3)">
+            <div class="day-num-big">3</div>
+            <div class="day-card-body">
+              <div class="day-card-date">Sat · 9 May</div>
+              <div class="day-card-title">Pisa &amp; Lucca</div>
+              <div class="day-card-summary">The Leaning Tower before the crowds, extraordinary pistachio gelato, then cycling the medieval walls of Lucca.</div>
+              <div class="day-badges">
+                <span class="badge terra">🗼 Tower</span>
+                <span class="badge sage">🚲 Cycling</span>
+                <span class="badge">🍦 Gelato</span>
+              </div>
+            </div>
+            <div class="day-card-chevron">›</div>
+          </div>
+
+          <div class="day-card" onclick="openDay(4)">
+            <div class="day-num-big">4</div>
+            <div class="day-card-body">
+              <div class="day-card-date">Sun · 10 May</div>
+              <div class="day-card-title">Florence: Art, Pasta &amp; Outlets</div>
+              <div class="day-card-summary">Uffizi Galleries, Ponte Vecchio, a 3-hour pasta making class, then designer shopping at Barberino til 21:00.</div>
+              <div class="day-badges">
+                <span class="badge terra">🖼 Uffizi</span>
+                <span class="badge gold">🍝 Pasta Class</span>
+                <span class="badge">🛍 Outlet</span>
+              </div>
+            </div>
+            <div class="day-card-chevron">›</div>
+          </div>
+
+          <div class="day-card" onclick="openDay(5)">
+            <div class="day-num-big">5</div>
+            <div class="day-card-body">
+              <div class="day-card-date">Mon · 11 May</div>
+              <div class="day-card-title">Free Day — Your Choice</div>
+              <div class="day-card-summary">Buffer day: slow morning and pool, hilltop Certaldo Alto, more Florence, or The Mall luxury outlet.</div>
+              <div class="day-badges">
+                <span class="badge sage">☀️ Slow Day option</span>
+                <span class="badge">🛍 The Mall option</span>
+              </div>
+            </div>
+            <div class="day-card-chevron">›</div>
+          </div>
+
+          <div class="day-card" onclick="openDay(6)">
+            <div class="day-num-big">6</div>
+            <div class="day-card-body">
+              <div class="day-card-date">Tue · 12 May</div>
+              <div class="day-card-title">Departure Day</div>
+              <div class="day-card-summary">Check out, optional last espresso in Pisa, return the car and fly home from PSA at 14:00.</div>
+              <div class="day-badges">
+                <span class="badge">✈ PSA → EIN 14:00</span>
+                <span class="badge">🚗 Car by 12:00</span>
+              </div>
+            </div>
+            <div class="day-card-chevron">›</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── DAY 1 ── -->
+      <div id="day-1" class="day-screen">
+        <div class="day-header">
+          <button class="back-btn" onclick="closeDay()">‹ All Days</button>
+          <div class="day-header-num">Day 1 · Thursday, 7 May 2026</div>
+          <div class="day-header-title">Arrival, Lunch<br>&amp; Pool</div>
+          <div class="day-header-tagline">La Locanda di Corrado, Stabbia</div>
+          <div class="day-header-badges">
+            <span class="day-header-badge">✈ Arrival</span>
+            <span class="day-header-badge">🚗 ~40 min</span>
+            <span class="day-header-badge">☀️ Pool afternoon</span>
+          </div>
+        </div>
+        <div class="timeline">
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot blue"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">11:05</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag arrive">Arrive</span>
+                  <div class="tl-title">Land at Pisa Airport — collect rental car</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Head to the SRC (Sixt/rental) desk after landing. Allow about 1 hour for the full process — paperwork, car inspection, loading bags.</p>
+                <div class="callout warn"><span class="callout-icon">⚠</span>Confirm your booking reference number before boarding the flight. Have it on your phone, not just email.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Pisa+International+Airport&dirflg=d">📍 Pisa Airport</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot gold"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">12:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag food">Lunch</span>
+                  <div class="tl-title">First lunch in Tuscany — two options</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <div class="option-block">
+                  <div class="option-label">Option A — Pisa</div>
+                  <div class="option-name">L'Ostellino</div>
+                  <div class="option-desc">Legendary locals' sandwich shop in Pisa. Extraordinary quality, fast, cheap. Perfect first stop if you fancy a stroll along the Arno.</div>
+                </div>
+                <div class="option-block">
+                  <div class="option-label">Option B — En Route</div>
+                  <div class="option-name">Osteria La Saletta or Osteria Zimbo di Vezzosi, Castelfiorentino</div>
+                  <div class="option-desc">If you want to head straight to the hotel area, both these trattorias in Castelfiorentino are welcoming and reliably good.</div>
+                </div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=L'Ostellino+Pisa&dirflg=d">📍 L'Ostellino</a>
+                  <a class="btn-map" href="maps.apple.com/?q=Castelfiorentino+Italy&dirflg=d">📍 Castelfiorentino</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot blue"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">13:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag drive">Drive</span>
+                  <div class="tl-title">Drive to La Locanda di Corrado — ~40 min</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Take the SGC FI-PI-LI motorway (toll-free). Address: Via della Buca 10, Stabbia, Cerreto Guidi.</p>
+                <div class="callout info"><span class="callout-icon">ℹ</span>Call ahead to request early check-in — the owners are friendly and often accommodate.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=La+Locanda+di+Corrado+Stabbia&dirflg=d">📍 La Locanda di Corrado</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot terra"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">14:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag drive">Grocery Run</span>
+                  <div class="tl-title">Stock up — Coop or Esselunga (~1 hr)</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Head to the nearest Coop or Esselunga in Castelfiorentino. Get: good coffee, pastries for morning, fruit, and a bottle of Chianti for the room.</p>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Esselunga+Castelfiorentino&dirflg=d">📍 Esselunga Castelfiorentino</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot green"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">16:00</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag relax">Relax</span>
+                  <div class="tl-title">Pool afternoon ☀️</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Unpack slowly. Aperol Spritz by the pool. You're in Tuscany. Let it sink in. Early night ahead of a big birthday tomorrow.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot gold"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">19:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag food">Dinner</span>
+                  <div class="tl-title">Dinner locally</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Hotel dinner if available, or a short drive (~10 min) to Osteria La Saletta or Zafferano in Castelfiorentino. Keep it relaxed — big day tomorrow.</p>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Osteria+La+Saletta+Castelfiorentino&dirflg=d">📍 Osteria La Saletta</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── DAY 2 ── -->
+      <div id="day-2" class="day-screen">
+        <div class="day-header birthday-header">
+          <button class="back-btn" onclick="closeDay()">‹ All Days</button>
+          <div class="day-header-num">Day 2 · Friday, 8 May 2026</div>
+          <div class="day-header-title">Cinque Terre 🎂</div>
+          <div class="day-header-tagline">Gabi's Birthday — La Spezia &amp; the Villages</div>
+          <div class="day-header-badges">
+            <span class="day-header-badge birthday">🎂 Gabi's Birthday</span>
+            <span class="day-header-badge">🚗 ~1h20 each way</span>
+            <span class="day-header-badge">🏖 Monterosso</span>
+          </div>
+        </div>
+        <div class="timeline">
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot blue"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">07:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag drive">Depart</span>
+                  <div class="tl-title">Drive to La Spezia — ~1h20 via A12</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Take the A12 motorway towards La Spezia. Park at Europa Park underground car park, Piazza Europa — around €15/day.</p>
+                <div class="callout warn"><span class="callout-icon">⚠</span>Never drive into the Cinque Terre villages themselves. Cars are banned and fines are severe. La Spezia is your base.</div>
+                <div class="callout info"><span class="callout-icon">ℹ</span>Buy the Cinque Terre Card (~€18) at La Spezia station — gives unlimited train rides between all 5 villages plus trail access.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Europa+Park+La+Spezia&dirflg=d">📍 Europa Park Car Park</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot green"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">09:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag sight">Beach</span>
+                  <div class="tl-title">Monterosso al Mare 🏖</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">The only Cinque Terre village with a proper sandy beach. Head to Spiaggia Fegina in the new town. Choose between the free section or a paid lido (€30 umbrella + 2 sunbeds). Sea is around 17–18°C in May — refreshing.</p>
+                <div class="callout star"><span class="callout-icon">⭐</span>Best CT village for a proper morning beach session. The old town is also gorgeous for a morning stroll.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Monterosso+al+Mare+Cinque+Terre&dirflg=d">📍 Monterosso al Mare</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot gold"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">12:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag special">🎂 Birthday Lunch</span>
+                  <div class="tl-title">Ristorante Miky — Birthday Celebration</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Michelin-recognised Ristorante Miky in Monterosso. Order the trofie al pesto and the fritto misto di mare. This is the main birthday meal.</p>
+                <div class="callout warn"><span class="callout-icon">⚠</span>Must reserve ahead — this is the best restaurant in CT and fills fast, especially on weekends.</div>
+                <div class="callout star"><span class="callout-icon">⭐</span>Tell them it's Gabi's birthday when you book AND when you arrive. Expect something special from the kitchen.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Ristorante+Miky+Monterosso&dirflg=d">📍 Ristorante Miky</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot terra"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">14:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag village">Village</span>
+                  <div class="tl-title">Manarola — the most photogenic village</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Train from Monterosso to Manarola. The coloured cliffside houses stacked above the sea are CT's most iconic view. Rock swimming at the marina if you fancy a dip. Walk up to Punta Bonfiglio viewpoint for the classic shot.</p>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Manarola+Cinque+Terre&dirflg=d">📍 Manarola</a>
+                  <a class="btn-map" href="maps.apple.com/?q=Punta+Bonfiglio+Manarola&dirflg=d">📍 Punta Bonfiglio</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot gold"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">17:00</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag special">✨ Golden Hour</span>
+                  <div class="tl-title">Nessun Dorma Aperitivo Bar</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">The terrace bar perched above Manarola with arguably the best view in all of Italy. Order a Spritz or the local Sciacchetrà dessert wine. Time the golden hour light perfectly.</p>
+                <div class="callout warn"><span class="callout-icon">⚠</span>Arrive early — the terrace fills up well before sunset. Go at 17:00 to get a prime spot.</div>
+                <div class="callout star"><span class="callout-icon">⭐</span>This is the moment of the trip. Sciacchetrà is a sweet amber wine made only in CT — worth every cent.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Nessun+Dorma+Manarola&dirflg=d">📍 Nessun Dorma</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot blue"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">19:00</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag drive">Return</span>
+                  <div class="tl-title">Train to La Spezia → drive home</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Train back to La Spezia, collect the car from Europa Park, and drive home ~1h20 on A12. Home around 21:30.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── DAY 3 ── -->
+      <div id="day-3" class="day-screen">
+        <div class="day-header">
+          <button class="back-btn" onclick="closeDay()">‹ All Days</button>
+          <div class="day-header-num">Day 3 · Saturday, 9 May 2026</div>
+          <div class="day-header-title">Pisa &amp; Lucca</div>
+          <div class="day-header-tagline">Tower, gelato, and cycling the medieval walls</div>
+          <div class="day-header-badges">
+            <span class="day-header-badge">🗼 Pisa</span>
+            <span class="day-header-badge">🚲 Lucca walls</span>
+            <span class="day-header-badge">🍦 Best gelato</span>
+          </div>
+        </div>
+        <div class="timeline">
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot terra"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">08:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag museum">Monument</span>
+                  <div class="tl-title">Piazza dei Miracoli &amp; Leaning Tower 🗼</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Arrive before 10am to beat the tour bus crowds. The "Field of Miracles" with the Tower, Baptistery, and Camposanto is genuinely stunning at this hour. Get the combo ticket for all three.</p>
+                <div class="callout warn"><span class="callout-icon">⚠</span>Tower tickets sell out fast, especially on Saturdays. Pre-book at opapisa.it before leaving home — Saturday slots can go weeks ahead.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Piazza+dei+Miracoli+Pisa&dirflg=d">📍 Piazza dei Miracoli</a>
+                  <a class="btn-book" href="https://www.opapisa.it/visita/torre-pendente/" target="_blank">🎟 Book Tower</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot gold"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">10:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag food">Gelato</span>
+                  <div class="tl-title">Arno walk + La Bottega del Gelato 🍦</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Stroll down to Piazza Garibaldi along the Arno. La Bottega del Gelato is right on the piazza — the pistachio is extraordinary. Don't skip it.</p>
+                <div class="callout star"><span class="callout-icon">⭐</span>Widely considered the best gelato in Pisa. Pistachio cone is non-negotiable.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=La+Bottega+del+Gelato+Pisa&dirflg=d">📍 La Bottega del Gelato</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot green"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">11:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag relax">Outdoor</span>
+                  <div class="tl-title">Lucca — Cycle the Walls 🚲</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Drive ~30 min from Pisa to Lucca. Park free at Parcheggio Palatucci just outside centro (Lucca is ZTL — camera-enforced). Rent bikes and cycle the famous 4km tree-lined loop on top of the intact Renaissance walls. Views of rooftops, bell towers, and the Apuan Alps.</p>
+                <div class="callout warn"><span class="callout-icon">⚠</span>Lucca centro is a ZTL zone. Do NOT drive in — park at Palatucci outside the walls.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Parcheggio+Palatucci+Lucca&dirflg=d">📍 Parcheggio Palatucci</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot gold"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">13:00</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag food">Lunch</span>
+                  <div class="tl-title">Piazza dell'Anfiteatro — lunch &amp; explore</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">One of Italy's most unusual squares — an oval piazza built on the outline of an ancient Roman amphitheatre. Pick any of the trattorias around it, all reliable. After lunch: climb Torre Guinigi (trees growing from the top!) and browse the elegant Via Fillungo for shopping.</p>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Piazza+dell'Anfiteatro+Lucca&dirflg=d">📍 Piazza dell'Anfiteatro</a>
+                  <a class="btn-map" href="maps.apple.com/?q=Torre+Guinigi+Lucca&dirflg=d">📍 Torre Guinigi</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot blue"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">16:00</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag drive">Return</span>
+                  <div class="tl-title">Drive home ~60 min</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Back to La Locanda di Corrado. Dinner locally this evening — Osteria La Saletta, Zafferano, or hotel dinner.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── DAY 4 ── -->
+      <div id="day-4" class="day-screen">
+        <div class="day-header">
+          <button class="back-btn" onclick="closeDay()">‹ All Days</button>
+          <div class="day-header-num">Day 4 · Sunday, 10 May 2026</div>
+          <div class="day-header-title">Florence: Art,<br>Pasta &amp; Outlets</div>
+          <div class="day-header-tagline">A full Florence day — must do it on Sunday</div>
+          <div class="day-header-badges">
+            <span class="day-header-badge">🖼 Uffizi</span>
+            <span class="day-header-badge">🍝 Pasta Class</span>
+            <span class="day-header-badge">🛍 Barberino til 21:00</span>
+          </div>
+        </div>
+        <div class="timeline">
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot terra"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">08:15</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag museum">Museum</span>
+                  <div class="tl-title">Uffizi Galleries 🖼</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Skip-the-line tickets essential — book well in advance online. Allow 2–3 hours. Botticelli's Birth of Venus and Primavera, Caravaggio, Raphael, Michelangelo. One of the greatest collections in the world.</p>
+                <div class="callout warn"><span class="callout-icon">⚠</span>Uffizi is CLOSED on Mondays. This day must be Sunday, May 11 — do not swap with Day 5.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Uffizi+Gallery+Florence&dirflg=d">📍 Uffizi Gallery</a>
+                  <a class="btn-book" href="https://www.uffizi.it/gli-uffizi" target="_blank">🎟 Book Tickets</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot terra"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">10:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag sight">Landmark</span>
+                  <div class="tl-title">Ponte Vecchio &amp; Piazza della Signoria</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Just 2 minutes from the Uffizi. The medieval jewellers' bridge is endlessly photogenic — best in the early morning light. Then the Piazza della Signoria: free open-air sculptures including Cellini's Perseus and Giambologna's Rape of the Sabines.</p>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Ponte+Vecchio+Florence&dirflg=d">📍 Ponte Vecchio</a>
+                  <a class="btn-map" href="maps.apple.com/?q=Piazza+della+Signoria+Florence&dirflg=d">📍 Piazza della Signoria</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot gold"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">12:00</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag special">⭐ Highlight</span>
+                  <div class="tl-title">Pasta Class Florence 🍝 — ~3 hours</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">5.0 stars, 2,269+ reviews — one of the most loved experiences in Florence. Make three types of fresh pasta, drink wine throughout, then sit down and eat everything you made. Recipes emailed after.</p>
+                <div class="callout warn"><span class="callout-icon">⚠</span>Book as soon as possible — slots fill weeks ahead and this is the most booked-out class in Florence.</div>
+                <div class="callout star"><span class="callout-icon">⭐</span>The single best activity of the trip. Don't miss it.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Pasta+Class+Florence&dirflg=d">📍 Pasta Class</a>
+                  <a class="btn-book" href="https://www.pastaclassflorence.com/" target="_blank">🎟 Book Class</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot terra"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">15:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag sight">Explore</span>
+                  <div class="tl-title">Oltrarno or Mercato Centrale</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <div class="option-block">
+                  <div class="option-label">Option A</div>
+                  <div class="option-name">Oltrarno (artisan quarter)</div>
+                  <div class="option-desc">Cross the Arno. Goldsmiths, leather workshops, independent cafés. The quieter, more authentic side of Florence.</div>
+                </div>
+                <div class="option-block">
+                  <div class="option-label">Option B</div>
+                  <div class="option-name">Mercato Centrale</div>
+                  <div class="option-desc">Florence's covered food market. Downstairs is fresh produce; upstairs is a food hall with pasta, truffles, wine bars. Great afternoon browse.</div>
+                </div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Oltrarno+Florence&dirflg=d">📍 Oltrarno</a>
+                  <a class="btn-map" href="maps.apple.com/?q=Mercato+Centrale+Florence&dirflg=d">📍 Mercato Centrale</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot green"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">18:00</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag shop">Shopping</span>
+                  <div class="tl-title">Barberino Designer Outlet 🛍</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">10 minutes off the A1 motorway. 130+ stores: Dolce &amp; Gabbana, Furla, Prada, Ralph Lauren. 30–70% off. Free parking. Open until 21:00 on Sundays — perfect last stop before driving home.</p>
+                <div class="callout warn"><span class="callout-icon">⚠</span>Barberino is CLOSED on Mondays in May. Sunday only!</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Barberino+Designer+Outlet&dirflg=d">📍 Barberino Outlet</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── DAY 5 ── -->
+      <div id="day-5" class="day-screen">
+        <div class="day-header">
+          <button class="back-btn" onclick="closeDay()">‹ All Days</button>
+          <div class="day-header-num">Day 5 · Monday, 11 May 2026</div>
+          <div class="day-header-title">Free Day —<br>Your Choice</div>
+          <div class="day-header-tagline">Buffer day — three great options</div>
+          <div class="day-header-badges">
+            <span class="day-header-badge">☀️ Slow Day</span>
+            <span class="day-header-badge">🏛 Florence</span>
+            <span class="day-header-badge">🛍 The Mall</span>
+          </div>
+        </div>
+        <div class="timeline">
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot blue"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">Note</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag drive">Mon Closures</span>
+                  <div class="tl-title">What's closed today</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <div class="callout warn"><span class="callout-icon">⚠</span>Uffizi — CLOSED Mondays. Barberino Designer Outlet — CLOSED Mondays in May. Plan around these.</div>
+                <div class="callout info"><span class="callout-icon">ℹ</span>The Mall luxury outlet is open Mon–Sat 10:00–19:00 — a good Monday shopping option.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot green"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">All day</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag relax">Option A</span>
+                  <div class="tl-title">Slow Day — Pool &amp; Nearby Villages</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Sleep in. Morning coffee by the pool. Then choose a nearby village:</p>
+                <div class="option-block">
+                  <div class="option-label">Certaldo Alto — 20 min</div>
+                  <div class="option-name">Medieval Hilltop Town</div>
+                  <div class="option-desc">Boccaccio's birthplace. Preserved medieval walls, terracotta rooftops, funicular up the hill. Quiet and beautiful.</div>
+                </div>
+                <div class="option-block">
+                  <div class="option-label">San Miniato — 30 min</div>
+                  <div class="option-name">Panoramic Arno Valley Views</div>
+                  <div class="option-desc">Hilltop town with sweeping views of the Arno valley. Famous for white truffles. Worth a morning wander.</div>
+                </div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Certaldo+Alto+Italy&dirflg=d">📍 Certaldo Alto</a>
+                  <a class="btn-map" href="maps.apple.com/?q=San+Miniato+Tuscany&dirflg=d">📍 San Miniato</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot terra"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">All day</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag sight">Option B</span>
+                  <div class="tl-title">Back to Florence</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Plenty left to see that's open Mondays:</p>
+                <div class="option-block">
+                  <div class="option-label">Boboli Gardens</div>
+                  <div class="option-name">Open daily. Behind Pitti Palace.</div>
+                  <div class="option-desc">Renaissance gardens, fountains, grottoes and great city views. Beautiful for a slow morning walk.</div>
+                </div>
+                <div class="option-block">
+                  <div class="option-label">Duomo Complex</div>
+                  <div class="option-name">Open Mondays</div>
+                  <div class="option-desc">Brunelleschi's dome, the Baptistery mosaics, Giotto's Campanile. Book the dome climb ahead if possible.</div>
+                </div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Boboli+Gardens+Florence&dirflg=d">📍 Boboli Gardens</a>
+                  <a class="btn-map" href="maps.apple.com/?q=Duomo+Florence&dirflg=d">📍 Florence Duomo</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot green"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">All day</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag shop">Option C</span>
+                  <div class="tl-title">The Mall Luxury Outlet 🛍</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">The premium alternative to Barberino — Gucci, Prada, Valentino, Bottega Veneta, Saint Laurent. About 50 minutes via the A1 motorway. Open Mon–Sat 10:00–19:00.</p>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=The+Mall+Leccio+Outlet&dirflg=d">📍 The Mall Leccio</a>
+                  <a class="btn-book" href="https://www.themall.it" target="_blank">🌐 The Mall website</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot gold"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">Evening</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag special">🌅 Last Dinner</span>
+                  <div class="tl-title">Osteria del Vicario, Certaldo Alto</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">An ancient monastery converted into a restaurant with a terrace overlooking the Val d'Elsa valley. This is the perfect last dinner in Tuscany — romantic, refined, and utterly memorable. Pack tonight after dinner.</p>
+                <div class="callout star"><span class="callout-icon">⭐</span>The terrace at sunset is one of the most beautiful views of the trip. Reserve a table in advance and ask for terrace seating.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Osteria+del+Vicario+Certaldo&dirflg=d">📍 Osteria del Vicario</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── DAY 6 ── -->
+      <div id="day-6" class="day-screen">
+        <div class="day-header">
+          <button class="back-btn" onclick="closeDay()">‹ All Days</button>
+          <div class="day-header-num">Day 6 · Tuesday, 12 May 2026</div>
+          <div class="day-header-title">Arrivederci,<br>Toscana</div>
+          <div class="day-header-tagline">Check out and head home</div>
+          <div class="day-header-badges">
+            <span class="day-header-badge">✈ PSA → EIN 14:00</span>
+            <span class="day-header-badge">🚗 Car back by 12:00</span>
+          </div>
+        </div>
+        <div class="timeline">
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot blue"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">09:00</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag drive">Check Out</span>
+                  <div class="tl-title">Check out of La Locanda — on road by 10:00</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Check out by 10:00. It's approximately 40 minutes to Pisa Airport. Leave time for fuel and car inspection.</p>
+                <div class="callout warn"><span class="callout-icon">⚠</span>Rental car must be returned by 12:00. Don't leave this tight — factor in return paperwork.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot gold"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">10:15</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag food">Optional ☕</span>
+                  <div class="tl-title">Last espresso in Pisa</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">If time allows — a standing espresso at Caffè dell'Ussero on the Lungarno. One of the oldest cafés in Pisa. Don't use tourist bars near the tower.</p>
+                <div class="callout info"><span class="callout-icon">ℹ</span>Stand at the bar — "un caffè per favore". Sitting costs 2–3x more. This is the Italian way.</div>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Caffè+dell'Ussero+Pisa&dirflg=d">📍 Caffè dell'Ussero</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-stop">
+            <div class="timeline-left"><div class="tl-dot blue"></div><div class="tl-line"></div></div>
+            <div class="tl-card collapsed">
+              <div class="tl-card-head" onclick="toggleStop(this)">
+                <span class="tl-time">11:30</span>
+                <div class="tl-card-main">
+                  <span class="tl-tag arrive">Airport</span>
+                  <div class="tl-title">Return car → Check in → Fly home ✈️</div>
+                </div>
+                <span class="tl-expand-icon">⌄</span>
+              </div>
+              <div class="tl-card-body">
+                <p class="tl-desc">Return the rental car by 12:00, check in, through security, and find the gate. PSA → EIN departs 14:00.</p>
+                <div class="tl-actions">
+                  <a class="btn-map" href="maps.apple.com/?q=Pisa+International+Airport&dirflg=d">📍 Pisa Airport</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /days-container -->
+  </div>
+
+  <!-- ══════════════ MAP ══════════════ -->
+  <div id="screen-map" class="screen">
+    <div class="map-header">
+      <h2 class="map-title">Locations</h2>
+      <p class="map-subtitle">All key spots — tap to open in Apple Maps</p>
+    </div>
+
+    <div style="margin: 0 20px;">
+      <a href="maps.apple.com/?q=Tuscany+Italy&dirflg=d" style="display:block; background: linear-gradient(135deg, #3D2010 0%, #6B3820 55%, #C9983A 100%); border-radius: 16px; padding: 28px 24px; text-decoration: none; position: relative; overflow: hidden;">
+        <div style="position:absolute;inset:0;opacity:0.07;background:repeating-linear-gradient(45deg,#fff 0px,#fff 1px,transparent 1px,transparent 12px);"></div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:rgba(247,242,233,0.6);margin-bottom:8px;font-family:'DM Sans',sans-serif;">Open in Apple Maps</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:#F7F2E9;margin-bottom:6px;">Tuscany, Italy</div>
+        <div style="font-size:13px;color:rgba(247,242,233,0.65);font-family:'DM Sans',sans-serif;">Pisa · Cinque Terre · Lucca · Florence · Stabbia</div>
+        <div style="margin-top:18px;display:inline-flex;align-items:center;gap:6px;background:rgba(247,242,233,0.15);border:1.5px solid rgba(247,242,233,0.35);border-radius:10px;padding:9px 14px;color:#F7F2E9;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;">📍 Open Maps</div>
+      </a>
+    </div>
+
+    <div class="map-section">
+      <div class="map-section-title">🏨 Stay</div>
+      <div class="map-location-list">
+        <div class="map-location-item">
+          <span class="map-loc-name">La Locanda di Corrado, Stabbia</span>
+          <a class="btn-map-sm" href="maps.apple.com/?q=La+Locanda+di+Corrado+Stabbia&dirflg=d">📍 Maps</a>
+        </div>
+      </div>
+
+      <div class="map-section-title" style="padding-top:18px">🏖 Cinque Terre</div>
+      <div class="map-location-list">
+        <div class="map-location-item"><span class="map-loc-name">Europa Park Car Park, La Spezia</span><a class="btn-map-sm" href="maps.apple.com/?q=Europa+Park+La+Spezia&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">Monterosso al Mare</span><a class="btn-map-sm" href="maps.apple.com/?q=Monterosso+al+Mare&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">Manarola</span><a class="btn-map-sm" href="maps.apple.com/?q=Manarola+Cinque+Terre&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">Nessun Dorma Bar</span><a class="btn-map-sm" href="maps.apple.com/?q=Nessun+Dorma+Manarola&dirflg=d">📍 Maps</a></div>
+      </div>
+
+      <div class="map-section-title" style="padding-top:18px">🏛 Pisa</div>
+      <div class="map-location-list">
+        <div class="map-location-item"><span class="map-loc-name">Piazza dei Miracoli</span><a class="btn-map-sm" href="maps.apple.com/?q=Piazza+dei+Miracoli+Pisa&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">La Bottega del Gelato</span><a class="btn-map-sm" href="maps.apple.com/?q=La+Bottega+del+Gelato+Pisa&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">Caffè dell'Ussero</span><a class="btn-map-sm" href="maps.apple.com/?q=Caffe+dell+Ussero+Pisa&dirflg=d">📍 Maps</a></div>
+      </div>
+
+      <div class="map-section-title" style="padding-top:18px">🏰 Lucca</div>
+      <div class="map-location-list">
+        <div class="map-location-item"><span class="map-loc-name">Parcheggio Palatucci</span><a class="btn-map-sm" href="maps.apple.com/?q=Parcheggio+Palatucci+Lucca&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">Piazza dell'Anfiteatro</span><a class="btn-map-sm" href="maps.apple.com/?q=Piazza+Anfiteatro+Lucca&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">Torre Guinigi</span><a class="btn-map-sm" href="maps.apple.com/?q=Torre+Guinigi+Lucca&dirflg=d">📍 Maps</a></div>
+      </div>
+
+      <div class="map-section-title" style="padding-top:18px">🎨 Florence</div>
+      <div class="map-location-list">
+        <div class="map-location-item"><span class="map-loc-name">Uffizi Gallery</span><a class="btn-map-sm" href="maps.apple.com/?q=Uffizi+Gallery+Florence&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">Ponte Vecchio</span><a class="btn-map-sm" href="maps.apple.com/?q=Ponte+Vecchio+Florence&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">Pasta Class Florence</span><a class="btn-map-sm" href="maps.apple.com/?q=Pasta+Class+Florence&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">Oltrarno Quarter</span><a class="btn-map-sm" href="maps.apple.com/?q=Oltrarno+Florence&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">Mercato Centrale</span><a class="btn-map-sm" href="maps.apple.com/?q=Mercato+Centrale+Florence&dirflg=d">📍 Maps</a></div>
+      </div>
+
+      <div class="map-section-title" style="padding-top:18px">🛍 Shopping</div>
+      <div class="map-location-list">
+        <div class="map-location-item"><span class="map-loc-name">Barberino Designer Outlet</span><a class="btn-map-sm" href="maps.apple.com/?q=Barberino+Designer+Outlet&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">The Mall Leccio</span><a class="btn-map-sm" href="maps.apple.com/?q=The+Mall+Leccio&dirflg=d">📍 Maps</a></div>
+      </div>
+
+      <div class="map-section-title" style="padding-top:18px">🍽 Restaurants</div>
+      <div class="map-location-list">
+        <div class="map-location-item"><span class="map-loc-name">L'Ostellino, Pisa</span><a class="btn-map-sm" href="maps.apple.com/?q=L+Ostellino+Pisa&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">Ristorante Miky, Monterosso</span><a class="btn-map-sm" href="maps.apple.com/?q=Ristorante+Miky+Monterosso&dirflg=d">📍 Maps</a></div>
+        <div class="map-location-item"><span class="map-loc-name">Osteria del Vicario, Certaldo</span><a class="btn-map-sm" href="maps.apple.com/?q=Osteria+del+Vicario+Certaldo&dirflg=d">📍 Maps</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ TIPS ══════════════ -->
+  <div id="screen-tips" class="screen">
+    <div class="tips-header">
+      <h2 class="tips-title">Essential Tips</h2>
+    </div>
+    <div class="tips-grid">
+
+      <div class="tip-card">
+        <div class="tip-emoji">📅</div>
+        <div class="tip-title">Public Holidays</div>
+        <div class="tip-body">No Italian public holidays May 7–12, 2026. All sites open normally.</div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-emoji">🖼</div>
+        <div class="tip-title">Uffizi</div>
+        <div class="tip-body">Closed Mondays. Sunday May 11 only. Book skip-the-line well ahead.</div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-emoji">🛍</div>
+        <div class="tip-title">Barberino Outlet</div>
+        <div class="tip-body">Closed Mondays in May. Best: Sunday May 11 til 21:00. Free parking.</div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-emoji">🛍</div>
+        <div class="tip-title">The Mall</div>
+        <div class="tip-body">Open Mon–Sat 10–19. Gucci, Prada, Valentino. ~50 min via A1.</div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-emoji">🚆</div>
+        <div class="tip-title">Cinque Terre</div>
+        <div class="tip-body">Park La Spezia ~€15/day. CT Card ~€18 = unlimited trains + trails.</div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-emoji">🚗</div>
+        <div class="tip-title">ZTL Zones</div>
+        <div class="tip-body">Florence, Pisa &amp; Lucca are camera-enforced. Park outside, walk in. Fines €100+.</div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-emoji">☀️</div>
+        <div class="tip-title">May Weather</div>
+        <div class="tip-body">18–24°C, mostly sunny. Sea ~17–18°C. Sunscreen + light layer for evenings.</div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-emoji">💳</div>
+        <div class="tip-title">Cash</div>
+        <div class="tip-body">Many trattorias prefer cash. Keep €30–50 on hand. "Coperto" (€2–4) is a legal cover charge.</div>
+      </div>
+
+      <div class="tip-card wide">
+        <div class="tip-emoji">🚗</div>
+        <div class="tip-title">Car Tips</div>
+        <div class="tip-body">SGC FI-PI-LI is toll-free. A1/A11 have tolls — keep change or card. Fill up at Autogrill stations, not small village stations (more expensive).</div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-emoji">🍷</div>
+        <div class="tip-title">Ordering Wine</div>
+        <div class="tip-body">Always ask for house Chianti (vino della casa) — cheaper and often better. "Un quarto di rosso" = 250ml carafe.</div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-emoji">📱</div>
+        <div class="tip-title">Data &amp; Maps</div>
+        <div class="tip-body">EU roaming from NL works fine. Download offline Google Maps for Stabbia area before leaving.</div>
+      </div>
+
+      <div class="tip-card wide">
+        <div class="tip-emoji">🎂</div>
+        <div class="tip-title">Birthday Tips</div>
+        <div class="tip-body">Tell every restaurant it's Gabi's birthday. Italians absolutely love this — expect a free dessert, a candle, or the whole room singing "Auguri!" It genuinely happens.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ RESTAURANTS ══════════════ -->
+  <div id="screen-restaurants" class="screen">
+    <div class="restaurants-header">
+      <h2 class="restaurants-title">Restaurants</h2>
+    </div>
+
+    <div class="rest-section">
+      <div class="rest-section-title">🏛 Pisa</div>
+      <div class="rest-cards">
+        <div class="rest-card">
+          <div class="rest-card-top">
+            <div class="rest-name">L'Ostellino</div>
+            <div class="rest-price">€</div>
+          </div>
+          <div class="rest-meta">
+            <span class="rest-cuisine">Sandwich shop</span>
+          </div>
+          <div class="rest-desc">Legendary locals' spot — extraordinary quality at rock-bottom prices. Fast and satisfying first-day lunch.</div>
+          <a class="btn-map" href="maps.apple.com/?q=L+Ostellino+Pisa&dirflg=d">📍 Open in Maps</a>
+        </div>
+        <div class="rest-card">
+          <div class="rest-card-top">
+            <div class="rest-name">La Bottega del Gelato</div>
+            <div class="rest-price">€</div>
+          </div>
+          <div class="rest-meta">
+            <span class="rest-cuisine">Gelateria</span>
+          </div>
+          <div class="rest-desc">Piazza Garibaldi. Best gelato in Pisa. The pistachio is extraordinary — do not leave without one.</div>
+          <a class="btn-map" href="maps.apple.com/?q=La+Bottega+del+Gelato+Pisa&dirflg=d">📍 Open in Maps</a>
+        </div>
+        <div class="rest-card">
+          <div class="rest-card-top">
+            <div class="rest-name">Caffè dell'Ussero</div>
+            <div class="rest-price">€</div>
+          </div>
+          <div class="rest-meta">
+            <span class="rest-cuisine">Historic café</span>
+          </div>
+          <div class="rest-desc">On the Lungarno — one of Pisa's oldest cafés. Perfect for a last standing espresso at the bar before the airport.</div>
+          <a class="btn-map" href="maps.apple.com/?q=Caffe+dell+Ussero+Pisa&dirflg=d">📍 Open in Maps</a>
+        </div>
+      </div>
+
+      <div class="rest-section-title">🏖 Cinque Terre</div>
+      <div class="rest-cards">
+        <div class="rest-card">
+          <div class="rest-card-top">
+            <div class="rest-name">Ristorante Miky</div>
+            <div class="rest-price">€€€</div>
+          </div>
+          <div class="rest-meta">
+            <span class="rest-cuisine">Seafood · Michelin-recognised</span>
+          </div>
+          <div class="rest-desc">The birthday lunch spot. Reserve ahead. Order trofie al pesto and fritto misto di mare — the Ligurian classics done perfectly.</div>
+          <a class="btn-map" href="maps.apple.com/?q=Ristorante+Miky+Monterosso&dirflg=d">📍 Open in Maps</a>
+        </div>
+        <div class="rest-card">
+          <div class="rest-card-top">
+            <div class="rest-name">Nessun Dorma</div>
+            <div class="rest-price">€€</div>
+          </div>
+          <div class="rest-meta">
+            <span class="rest-cuisine">Wine bar · Aperitivo</span>
+          </div>
+          <div class="rest-desc">Terrace bar above Manarola with the best sunset view in the Cinque Terre. Order Sciacchetrà, the local amber dessert wine.</div>
+          <a class="btn-map" href="maps.apple.com/?q=Nessun+Dorma+Manarola&dirflg=d">📍 Open in Maps</a>
+        </div>
+      </div>
+
+      <div class="rest-section-title">🏡 Near Hotel (Castelfiorentino)</div>
+      <div class="rest-cards">
+        <div class="rest-card">
+          <div class="rest-card-top">
+            <div class="rest-name">Osteria La Saletta</div>
+            <div class="rest-price">€€</div>
+          </div>
+          <div class="rest-meta">
+            <span class="rest-cuisine">Tuscan trattoria</span>
+          </div>
+          <div class="rest-desc">Ribollita, fresh pasta, local Chianti. Welcoming and genuinely local atmosphere. Good for Day 1 or Day 3 evening dinner.</div>
+          <a class="btn-map" href="maps.apple.com/?q=Osteria+La+Saletta+Castelfiorentino&dirflg=d">📍 Open in Maps</a>
+        </div>
+        <div class="rest-card">
+          <div class="rest-card-top">
+            <div class="rest-name">Osteria Zimbo di Vezzosi</div>
+            <div class="rest-price">€€</div>
+          </div>
+          <div class="rest-meta">
+            <span class="rest-cuisine">Tuscan trattoria</span>
+          </div>
+          <div class="rest-desc">Locals' favourite in Castelfiorentino. Generous portions, honest prices, very warm service.</div>
+          <a class="btn-map" href="maps.apple.com/?q=Osteria+Zimbo+Vezzosi+Castelfiorentino&dirflg=d">📍 Open in Maps</a>
+        </div>
+      </div>
+
+      <div class="rest-section-title">🎨 Florence</div>
+      <div class="rest-cards">
+        <div class="rest-card">
+          <div class="rest-card-top">
+            <div class="rest-name">Pasta Class Florence</div>
+            <div class="rest-price">€€€</div>
+          </div>
+          <div class="rest-meta">
+            <span class="rest-cuisine">Cooking experience · 5.0★ / 2269 reviews</span>
+          </div>
+          <div class="rest-desc">Make 3 types of fresh pasta, drink wine throughout, eat everything you made. Recipes emailed. The highlight of Florence. Book far ahead.</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+            <a class="btn-map" href="maps.apple.com/?q=Pasta+Class+Florence&dirflg=d">📍 Maps</a>
+            <a class="btn-book" href="https://www.pastaclassflorence.com/" target="_blank">🎟 Book Now</a>
+          </div>
+        </div>
+        <div class="rest-card">
+          <div class="rest-card-top">
+            <div class="rest-name">Mercato Centrale</div>
+            <div class="rest-price">€</div>
+          </div>
+          <div class="rest-meta">
+            <span class="rest-cuisine">Market food hall</span>
+          </div>
+          <div class="rest-desc">Covered market — downstairs fresh produce, upstairs food hall with pasta, truffles, wine bars. The best casual lunch in Florence.</div>
+          <a class="btn-map" href="maps.apple.com/?q=Mercato+Centrale+Florence&dirflg=d">📍 Open in Maps</a>
+        </div>
+      </div>
+
+      <div class="rest-section-title">🏰 Lucca</div>
+      <div class="rest-cards">
+        <div class="rest-card">
+          <div class="rest-card-top">
+            <div class="rest-name">Piazza dell'Anfiteatro Trattorias</div>
+            <div class="rest-price">€€</div>
+          </div>
+          <div class="rest-meta">
+            <span class="rest-cuisine">Various Tuscan</span>
+          </div>
+          <div class="rest-desc">Pick any of the trattorias around the oval piazza — they're all good. Sit outside and soak up one of Italy's most unusual squares.</div>
+          <a class="btn-map" href="maps.apple.com/?q=Piazza+Anfiteatro+Lucca&dirflg=d">📍 Open in Maps</a>
+        </div>
+      </div>
+
+      <div class="rest-section-title">🌄 Certaldo Alto</div>
+      <div class="rest-cards">
+        <div class="rest-card">
+          <div class="rest-card-top">
+            <div class="rest-name">Osteria del Vicario</div>
+            <div class="rest-price">€€€</div>
+          </div>
+          <div class="rest-meta">
+            <span class="rest-cuisine">Tuscan fine dining</span>
+          </div>
+          <div class="rest-desc">Ancient monastery converted into a restaurant. Terrace over the Val d'Elsa. The perfect last dinner of the trip — romantic, refined, and unforgettable.</div>
+          <a class="btn-map" href="maps.apple.com/?q=Osteria+del+Vicario+Certaldo&dirflg=d">📍 Open in Maps</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ BOTTOM NAV ══════════════ -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-screen="home" onclick="showScreen('home')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Home</span>
+    </button>
+    <button class="nav-btn" data-screen="days" onclick="showScreen('days')">
+      <span class="nav-icon">📅</span>
+      <span class="nav-label">Days</span>
+    </button>
+    <button class="nav-btn" data-screen="map" onclick="showScreen('map')">
+      <span class="nav-icon">🗺</span>
+      <span class="nav-label">Map</span>
+    </button>
+    <button class="nav-btn" data-screen="tips" onclick="showScreen('tips')">
+      <span class="nav-icon">💡</span>
+      <span class="nav-label">Tips</span>
+    </button>
+    <button class="nav-btn" data-screen="restaurants" onclick="showScreen('restaurants')">
+      <span class="nav-icon">🍽</span>
+      <span class="nav-label">Eat</span>
+    </button>
+  </nav>
+</div>
+
+<script>
+// ── ROUTING ──
+let currentScreen = 'home';
+let currentDay = null;
+
+function showScreen(id) {
+  // Close any open day first
+  if (currentDay) closeDay();
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+  const screen = document.getElementById('screen-' + id);
+  if (screen) {
+    screen.classList.add('active');
+    screen.scrollTop = 0;
+  }
+
+  const btn = document.querySelector('[data-screen="' + id + '"]');
+  if (btn) btn.classList.add('active');
+
+  currentScreen = id;
+  window.location.hash = id;
+}
+
+function openDay(num) {
+  const dayEl = document.getElementById('day-' + num);
+  if (!dayEl) return;
+  // Ensure days screen is active
+  showScreen('days');
+  currentDay = num;
+  // Force reflow then animate
+  dayEl.style.display = 'block';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      dayEl.classList.add('open');
+      dayEl.scrollTop = 0;
+    });
+  });
+}
+
+function closeDay() {
+  if (!currentDay) return;
+  const dayEl = document.getElementById('day-' + currentDay);
+  if (!dayEl) return;
+  dayEl.classList.remove('open');
+  // Hide after transition
+  dayEl.addEventListener('transitionend', function handler() {
+    dayEl.style.display = 'none';
+    dayEl.removeEventListener('transitionend', handler);
+  });
+  currentDay = null;
+}
+
+// ── TIMELINE EXPAND / COLLAPSE ──
+function toggleStop(headEl) {
+  const card = headEl.closest('.tl-card');
+  card.classList.toggle('collapsed');
+}
+
+// ── HASH ROUTING on load ──
+(function() {
+  const hash = window.location.hash.replace('#', '');
+  const validScreens = ['home','days','map','tips','restaurants'];
+  if (hash && validScreens.includes(hash)) {
+    showScreen(hash);
+  } else {
+    showScreen('home');
+  }
+})();
+
+// ── PREVENT DOUBLE-TAP ZOOM ──
+document.addEventListener('touchend', function(e) {
+  if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+    e.preventDefault && false;
+  }
+}, { passive: true });
+
+// ── SMOOTH SCROLL RESTORATION ──
+window.history.scrollRestoration = 'manual';
+</script>
+</body>
+</html>
